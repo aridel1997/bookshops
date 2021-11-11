@@ -29,7 +29,7 @@
 
 		<semantic:content>
 			<Table 
-			items="{path:'/Books'}">
+				items="{path:'/Books'}">
 				<columns>
 					<Column>
 						<Text />
@@ -48,7 +48,7 @@
 					</Column>
 				</columns>
 				<items>
-					<ColumnListItem type="Navigation">
+					<ColumnListItem type="Navigation" press = "onBooksTableItemSelect">
 						<cells>
 							<Image src="{bookPictureURL}"  width="20%"/>
 							<ObjectIdentifier
