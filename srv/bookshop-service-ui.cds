@@ -49,7 +49,8 @@ annotate BookshopService.Books with @(UI : {
         {
             $Type  : 'UI.DataFieldForAnnotation',
             Label  : 'Rating',
-            Target : '@UI.DataPoint#Rating'
+            Target : '@UI.DataPoint#Rating',
+            
         },
     ],
     Facets             : [
