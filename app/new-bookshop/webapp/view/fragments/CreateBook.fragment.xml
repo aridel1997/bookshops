@@ -1,0 +1,44 @@
+<core:FragmentDefinition 
+    xmlns="sap.m" 
+    xmlns:core="sap.ui.core" 
+    xmlns:smartForm="sap.ui.comp.smartform"
+    xmlns:smartField="sap.ui.comp.smartfield">
+    
+  <Dialog id="CreateBook" title="Create book">
+    	<smartForm:SmartForm id="ef" class="editableForm" editTogglable="true" editable="true">
+			<smartForm:Group id="G1">
+				<smartForm:GroupElement id="GE-ef">
+					<smartField:SmartField id="edvfe" value="{title}"/>
+				</smartForm:GroupElement>
+        <smartForm:GroupElement>
+					<smartField:SmartField id="hinoi" value="{author}" />
+				</smartForm:GroupElement>
+				<smartForm:GroupElement id="revg">
+					<smartField:SmartField id="fbvf" value="{descr}" placeholder="hgfdf"/>
+				</smartForm:GroupElement>
+        <smartForm:GroupElement id="revgcg">
+					<smartField:SmartField id="vfnh" value="{bookPictureURL}" placeholder="hgfdf"/>
+				</smartForm:GroupElement>
+        <smartForm:GroupElement id="revbgcg">
+					<smartField:SmartField id="vfnvh" value="{genre}" placeholder="hgfdf"/>
+				</smartForm:GroupElement>
+        <smartForm:GroupElement id="revvgfghcg">
+					<smartField:SmartField id="vafnh" value="{stock}" placeholder="hgfdf"/>
+				</smartForm:GroupElement>
+        <smartForm:GroupElement id="revbcvgcg">
+					<smartField:SmartField id="vbhkjflnvh" value="{price}" placeholder="hgfdf"/>
+				</smartForm:GroupElement>
+        <smartForm:GroupElement id="revbcvgcjg">
+					<smartField:SmartField id="vfjlnvh" value="{rating}" placeholder="hgfdf"/>
+				</smartForm:GroupElement>
+			</smartForm:Group>
+		</smartForm:SmartForm>
+
+    <beginButton>
+      <Button text="Create" type="Emphasized" press="onCreateBook" />
+    </beginButton>
+    <endButton>
+      <Button text="Cancel" press="onCloseDialog" />
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>

@@ -2,11 +2,11 @@ namespace sap.ui.bookshop;
 using { cuid } from '@sap/cds/common';
 
 entity Books: cuid {
-  title  : String;
+  title  : String(20);
   descr  : String;
   bookPictureURL: String;
   author : Association to Authors;
-  genre  : String;
+  genre  : String(20);
   stock  : Integer;
   price  : Decimal(9,2);
 
@@ -16,7 +16,7 @@ entity Books: cuid {
 }
 
 entity Authors : cuid {
-  name   : String;
+  name   : String(18);
   dateOfBirth  : Date;
   placeOfBirth: String;
   dateOfDeath: Date;

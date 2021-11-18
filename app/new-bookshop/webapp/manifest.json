@@ -76,7 +76,9 @@
 					"operationMode": "Server",
 					"groupId": "$direct",
 					"synchronizationMode": "None",
-					"autoExpandSelect":true
+					"autoExpandSelect":true,
+					"defaultBindingMode": "TwoWay",
+					"useBatch": false
 				}
 			}
 		},

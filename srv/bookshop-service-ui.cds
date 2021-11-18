@@ -12,6 +12,11 @@ annotate BookshopService.Books with {
     bookPictureURL @title : 'Book';
 }
 
+annotate BookshopService.Authors with {
+    name          @title : 'Name';
+    placeOfBirth  @title : 'Place of birth';
+}
+
 annotate BookshopService.Books with {
     @UI.IsImageURL : true
     bookPictureURL
@@ -81,7 +86,14 @@ annotate BookshopService.Books with @(UI : {
         {Value : genre},
         {Value : stock}
     ]},
-    FieldGroup #Rating : {Data : [{Value : rating}]}
+    FieldGroup #Rating : {Data : [
+         {
+            $Type  : 'UI.DataFieldForAnnotation',
+            Label  : 'Rating',
+            Target : '@UI.DataPoint#Rating',
+            
+        }
+    ]}
 }, ) {
 };
 
@@ -97,6 +109,14 @@ annotate BookshopService.Books with {
                     $Type             : 'Common.ValueListParameterOut',
                     LocalDataProperty : 'author_ID',
                     ValueListProperty : 'ID'
+                },
+                {
+                    $Type             : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'name'
+                },
+                {
+                    $Type             : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'placeOfBirth'
                 }
                 ]
 			}

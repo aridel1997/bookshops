@@ -18,6 +18,10 @@ sap.ui.define([
 			return UIComponent.getRouterFor(this);
 		},
 
+		onCloseDialog: function () {
+			this.oDialog.close();
+		  },
+
 		/**
 		 * Convenience method for getting the view model by name.
 		 * @public

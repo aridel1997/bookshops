@@ -4,7 +4,8 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:semantic="sap.f.semantic"
 	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
-	xmlns:smartTable="sap.ui.comp.smarttable">
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:core="sap.ui.core">
 
 	<semantic:SemanticPage showFooter="true" fitContent="true">
 
@@ -13,7 +14,16 @@
 		</semantic:titleHeading>
 
 		<semantic:headerContent>
-			<smartFilterBar:SmartFilterBar id="smartFilterBar" persistencyKey="UniqueAndStablePersistencyKey" entitySet="Books" considerSelectionVariants="true" basicSearchFieldName="title" enableBasicSearch="true" showClearButton="true">
+			<smartFilterBar:SmartFilterBar 
+				id="smartFilterBar" 
+				persistencyKey="UniqueAndStablePersistencyKey" 
+				entitySet="Books" 
+				considerSelectionVariants="true" 
+				visibleInAdvancedArea="true"
+				enableBasicSearch="true" 
+				showClearButton="true"
+				useToolbar="false"
+				>
 				<smartFilterBar:layoutData>
 					<FlexItemData shrinkFactor="0"/>
 				</smartFilterBar:layoutData>
@@ -32,16 +42,33 @@
 				header="Products" 
 				showRowCount="true" 
 				persistencyKey="SmartTableRefApp_Explored" 
-				enableAutoBinding="true" 
+				enableAutoBind="true" 
 				class="sapUiResponsiveContentPadding" 
 				tableType="ResponsiveTable" 
 				demandPopin="true" 
 				enableAutoColumnWidth="true" >
-				
+				 <Table>
+                    <columns>
+                        <Column>
+                            <customData> 
+                                <core:CustomData key="p13nData" value='\{"columnKey": "rating", "columnIndex":"7","leadingProperty": "rating"}'/>
+                            </customData>
+                            <Label text="Rating" />
+                        </Column>
+                        
+                    </columns>
+                    <items>
+                        <ColumnListItem type="Navigation">
+                        <cells>
+                            <RatingIndicator id="RI_default"  class="sapUiSmallMarginBottom" value="{rating}" tooltip="Rating Tooltip" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+                </Table>
 			</smartTable:SmartTable>
 		</semantic:content>
 		<semantic:positiveAction>
-			<semantic:PositiveAction text="Create" press="onCreateBookPress"/>
+			<semantic:PositiveAction text="Create" press=" onOpenDialogCreateBook"/>
 		</semantic:positiveAction>
 	</semantic:SemanticPage>
 
