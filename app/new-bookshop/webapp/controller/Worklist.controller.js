@@ -17,7 +17,7 @@ sap.ui.define(
             onOpenDialogCreateBook: function(){
                 var oView = this.getView();
                 var oODataModel = oView.getModel();
-                console.log(oODataModel)
+                console.log(oView.getModel("device"))
                 var oEntryCtx = oODataModel.createEntry("/Books");
 
                 if (!this.oDialog) {
@@ -34,9 +34,38 @@ sap.ui.define(
                 this.oDialog.open();
             },
 
+            onCreateBook: function () {
+                var oView = this.getView();
+                var oODataModel = oView.getModel();
+                var oCtx = this.oDialog.getBindingContext();
+                var flag = null;
+                var sPath = oCtx.sPath; 
+
+                // oODataModel.setProperty(`${sPath}/IsActiveEntity`, true);
+            
+
+                // var aInputsValue = [
+                //     oView.byId("idTitle-SF").getValue(),
+                //     oView.byId("idAuthor-SF").getValue(),
+                //     oView.byId("idDescription-SF").getValue(),
+                //     oView.byId("idPicture-SF").getValue(),
+                //     oView.byId("idGenre-SF").getValue(),
+                //     oView.byId("idStock-SF").getValue(),
+                //     oView.byId("idPrice-SF").getValue(),
+                //     oView.byId("idRating-SF").getValue(),
+                //     oView.byId("idCurrency-SF").getValue()
+                // ];
+
+           
+                    oODataModel.submitChanges();
+                    this.oDialog.close();
+
+            },
+
             onBooksTableItemSelect: function (oEvent) {
              console.log(oEvent.getSource().getBindingContext());
-            },
+            }
+            
         });
     }
 );

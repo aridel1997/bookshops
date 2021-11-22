@@ -77,8 +77,7 @@
 					"groupId": "$direct",
 					"synchronizationMode": "None",
 					"autoExpandSelect":true,
-					"defaultBindingMode": "TwoWay",
-					"useBatch": false
+					"defaultBindingMode": "TwoWay"
 				}
 			}
 		},
