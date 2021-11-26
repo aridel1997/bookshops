@@ -5,23 +5,50 @@ sap.ui.define(
         '../model/formatter',
         'sap/ui/model/Filter',
         'sap/ui/model/FilterOperator',
+        'sap/m/MessageToast',
     ],
-    function (BaseController, JSONModel, formatter, Filter, FilterOperator) {
+    function (
+        BaseController,
+        JSONModel,
+        formatter,
+        Filter,
+        FilterOperator,
+        MessageToast
+    ) {
         'use strict';
 
         return BaseController.extend('ns.newbookshop.controller.Worklist', {
             onInit: function () {
-
+                var oModelFieldCreateBook = new JSONModel({
+                    booksFields: {
+                        title: null,
+                        author: null,
+                        description: null,
+                        bookPictureURL: null,
+                        genre: null,
+                        stock: null,
+                        price: null,
+                        rating: null,
+                    },
+                });
+                this.oModelFieldCreateBook = oModelFieldCreateBook;
+                this.getView().setModel(
+                    oModelFieldCreateBook,
+                    'modelColumnSort'
+                );
             },
 
-            onOpenDialogCreateBook: function(){
+            onOpenDialogCreateBook: function () {
                 var oView = this.getView();
                 var oODataModel = oView.getModel();
-                console.log(oView.getModel("device"))
-                var oEntryCtx = oODataModel.createEntry("/Books");
+                var oEntryCtx = oODataModel.createEntry('/Books');
 
                 if (!this.oDialog) {
-                    this.oDialog = sap.ui.xmlfragment(oView.getId(), "ns.newbookshop.view.fragments.CreateBook", this);
+                    this.oDialog = sap.ui.xmlfragment(
+                        oView.getId(),
+                        'ns.newbookshop.view.fragments.CreateBook',
+                        this
+                    );
                     oView.addDependent(this.oDialog);
                 }
 
@@ -31,6 +58,7 @@ sap.ui.define(
                 var oMessageManager = sap.ui.getCore().getMessageManager();
 
                 oMessageManager.registerObject(this.oDialog, true);
+                oView.setModel(oMessageManager.getMessageModel(), 'message');
                 this.oDialog.open();
             },
 
@@ -38,34 +66,38 @@ sap.ui.define(
                 var oView = this.getView();
                 var oODataModel = oView.getModel();
                 var oCtx = this.oDialog.getBindingContext();
-                var flag = null;
-                var sPath = oCtx.sPath; 
-
+                var sPath = oCtx.sPath;
+                var fl = 0;
                 // oODataModel.setProperty(`${sPath}/IsActiveEntity`, true);
-            
 
-                // var aInputsValue = [
-                //     oView.byId("idTitle-SF").getValue(),
-                //     oView.byId("idAuthor-SF").getValue(),
-                //     oView.byId("idDescription-SF").getValue(),
-                //     oView.byId("idPicture-SF").getValue(),
-                //     oView.byId("idGenre-SF").getValue(),
-                //     oView.byId("idStock-SF").getValue(),
-                //     oView.byId("idPrice-SF").getValue(),
-                //     oView.byId("idRating-SF").getValue(),
-                //     oView.byId("idCurrency-SF").getValue()
-                // ];
+                let k = oCtx.getObject();
 
-           
+                for (let key in k) {
+                    if (key !== 'ID' && k[key] === undefined) {
+                        fl++;
+                    }
+                }
+
+                if (fl > 0) {
+                    MessageToast.show('Please fill in the required fields ');
+                } else {
                     oODataModel.submitChanges();
                     this.oDialog.close();
+                }
 
+                var sValidationErrorsNumber = this.getView()
+                    .getModel('message')
+                    .getData().length;
+                console.log(sValidationErrorsNumber);
             },
 
-            onBooksTableItemSelect: function (oEvent) {
-             console.log(oEvent.getSource().getBindingContext());
-            }
-            
+            onNavToObjectPage: function (oEvent) {
+                var oCtx = oEvent.getSource().getBindingContext();
+                this.getRouter()
+                    .navTo('object', {
+                        objectId: oCtx.getObject("ID"),
+                    });
+            },
         });
     }
 );

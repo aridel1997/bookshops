@@ -1,0 +1,19 @@
+ID;deliveryDate;customerName;customerCity;customerStreet;customerHouseNumber;customerApartmentNumber;paymentMethod;totalCost;currency_code;phoneNumber
+a5c19e98-7f1a-423b-a689-636f3adf6994;2021-07-30;Masha;Minsk;Kozlova;25;2;Cash;27.34;USD;+375298881231
+1fb7eee0-fbd7-4759-8609-e8e829f526b2;2021-07-30;Vladislav;Minsk;Lenina;7;12;Online;12.34;USD;+375294532235
+41cd1b15-6d4e-4321-b3b4-2bae86acccd5;2021-07-30;Egor;Brest;Miroshnichenko;2;4;CreditCard;11.11;USD;+375339913473;
+5abaee8a-0b23-4515-9ecd-a780e6cd9fbb;2021-07-30;Katya;Soligorsk;Kolasa;8; 54;Cash;15;USD;+375339913473
+7fc4794d-b5b8-48eb-bdec-243f0ea54484;2021-07-30;Inna Smirnova;Minsk;Kozlova;3;23;CreditCard;12.34;USD;+375259913473
+a5c19e98-7f1a-423b-a689-636f3adf4444;2021-07-30;Zoya;Minsk; Kozlova;25; 2;Cash;12.34;USD;+375298881231
+a5c19e98-7f1a-423b-a689-636f3adf4441;2021-07-30;Zoya;Minsk; Kozlova;25; 2;Cash;12.34;USD;+375298881231
+a5c19e98-7f1a-423b-a689-636f3adf4442;2021-07-30;Zoya;Minsk; Kozlova;25; 2;Cash;12.34;USD;+375298881231
+a5c19e98-7f1a-423b-a689-636f3adf4443;2021-07-30;Zoya;Minsk; Kozlova;25; 2;Cash;12.34;USD;+375298881231
+a5c19e98-7f1a-423b-a689-636f3adf4445;2021-07-30;Zoya;Minsk; Kozlova;25; 2;Cash;12.34;USD;+375298881231
+a5c19e98-7f1a-423b-a689-636f3adf4415;2021-07-30;Zoya;Minsk; Kozlova;25; 2;Cash;12.34;USD;+375298881231
+a5c19e98-7f1a-423b-a689-636f3adf4425;2021-07-30;Zoya;Minsk; Kozlova;25; 2;Cash;12.34;USD;+375298881231
+a5c19e98-7f1a-423b-a689-636f3adf4435;2021-07-30;Zoya;Minsk; Kozlova;25; 2;Cash;12.34;USD;+375298881231
+a5c19e98-7f1a-423b-a689-636f3adf4455;2021-07-30;Zoya;Minsk; Kozlova;25; 2;Cash;12.34;USD;+375298881231
+a5c19e98-7f1a-423b-a689-636f3adf4465;2021-07-30;Zoya;Minsk; Kozlova;25; 2;Cash;12.34;USD;+375298881231
+b5c19e98-7f1a-423b-a689-636f3adf4465;2021-07-30;Zoya;Minsk; Kozlova;25; 2;Cash;12.34;USD;+375298881231
+c5c19e98-7f1a-423b-a689-636f3adf4465;2021-07-30;Zoya;Minsk; Kozlova;25; 2;Cash;12.34;USD;+375298881231
+d5c19e98-7f1a-423b-a689-636f3adf4465;2021-07-30;Zoya;Minsk; Kozlova;25; 2;Cash;12.34;USD;+375298881231

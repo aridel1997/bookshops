@@ -9,12 +9,24 @@ annotate BookshopService.Books with {
     author         @title : 'Author`s name';
     currency_code  @title : 'Currency code';
     rating         @title : 'Rating';
-    bookPictureURL @title : 'Book';
+    bookPictureURL @title : 'Book cover';
 }
 
 annotate BookshopService.Authors with {
     name         @title : 'Name';
     placeOfBirth @title : 'Place of birth';
+
+}
+
+
+annotate BookshopService.Orders with {
+    deliveryDate @title: 'Date';
+    customerName @title: 'Customer name';
+    phoneNumber @title: 'Phone number';
+    address @title: 'Address';
+    paymentMethod @title: 'Payment method';
+    totalCost @title: 'Total cost';
+    currency @title: 'Currency';
 
 }
 
@@ -24,7 +36,7 @@ annotate BookshopService.Books with {
 };
 
 annotate BookshopService.Books with @(
-    UI           : {
+    UI            : {
         HeaderInfo         : {
             TypeName       : 'Book',
             TypeNamePlural : 'Books',
@@ -34,7 +46,10 @@ annotate BookshopService.Books with @(
             }
         },
 
-        SelectionFields    : [title],
+        SelectionFields    : [
+            title,
+            author_ID
+        ],
 
         DataPoint #Rating  : {
             Value         : rating,
@@ -95,16 +110,14 @@ annotate BookshopService.Books with @(
 
         }]}
     },
-    Capabilities : {
-        InsertRestrictions  : {
-            Insertable                    : true,
-        },
+    Capabilities  : {
+        InsertRestrictions            : {Insertable : true, },
         SearchRestrictions.Searchable : true,
         Insertable                    : true,
         Updatable                     : true,
         Deletable                     : true
     },
-    sap.creatable:                      true
+    sap.creatable : true
 ) {};
 
 annotate BookshopService.Books with {
@@ -133,6 +146,7 @@ annotate BookshopService.Books with {
     });
 
     price  @Measures.ISOCurrency : currency_code;
+    title  @mandatory;
 };
 
 annotate BookshopService.Authors with {
@@ -140,5 +154,25 @@ annotate BookshopService.Authors with {
         Text            : name,
         TextArrangement : #TextOnly,
     });
-
 }
+
+annotate BookshopService.Orders with @(
+    UI            : {
+        HeaderInfo         : {
+            TypeName       : 'Order',
+            TypeNamePlural : 'Orders',
+             Title          : {
+                $Type : 'UI.DataField',
+                Value : customerName
+            }
+        },
+
+        SelectionFields    : [customerName],
+
+        LineItem           : [
+            {Value : deliveryDate},
+            {Value : customerName},
+            {Value : paymentMethod},
+        ],
+    },
+) {};

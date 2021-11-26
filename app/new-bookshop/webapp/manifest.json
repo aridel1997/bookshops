@@ -102,7 +102,7 @@
 					"target": ["worklist"]
 				},
 				{
-					"pattern": "Books{objectId}",
+					"pattern": "Books/{objectId}",
 					"name": "object",
 					"target": ["object"]
 				}

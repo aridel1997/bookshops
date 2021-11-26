@@ -2,7 +2,7 @@ namespace sap.ui.bookshop;
 using { cuid } from '@sap/cds/common';
 
 entity Books: cuid {
-  title  : String(20);
+  title  : String(30) ;
   descr  : String;
   bookPictureURL: String;
   author : Association to Authors;
@@ -24,19 +24,19 @@ entity Authors : cuid {
 }
 
 entity Orders: cuid  { 
-  deliveryDate: Date;
-  customerName: String;
-  phoneNumber: String;
-  items : Composition of many { 
-    key book : Association to Books @assert.integrity:false;
-    amount: Integer;
-  };
-  address : array of {
-        city : String;
-        street : String;
-        apartment : Integer;
+    deliveryDate: Date @title: 'Delivery date';
+    customerName: String;
+    phoneNumber: String;
+    items : Composition of many { 
+        key book : Association to Books @assert.integrity:false;
+        amount: Integer;
     };
-  paymentMethod: String enum { Cash; CreditCard; Online};
-  totalCost: Integer;
-  currency : String;
+    customerCity: String;
+    customerStreet: String;
+    customerHouseNumber: Integer;
+    customerApartmentNumber: Integer;
+
+    paymentMethod: String enum { Cash; CreditCard; Online};
+    totalCost: Decimal(9,2);
+    currency_code : String;
 }

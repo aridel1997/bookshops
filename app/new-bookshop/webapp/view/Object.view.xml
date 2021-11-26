@@ -1,30 +1,111 @@
-<mvc:View
-	controllerName="ns.newbookshop.controller.Object"
-	xmlns="sap.m"
+<mvc:View controllerName="ns.newbookshop.controller.Object"
 	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:semantic="sap.f.semantic">
+	xmlns="sap.uxap"
+	xmlns:layout="sap.ui.layout"
+	xmlns:m="sap.m">
 
-	<semantic:SemanticPage
-		id="page"
-		headerPinnable="false"
-		toggleHeaderOnTitleClick="false"
-		busy="{objectView>/busy}"
-		busyIndicatorDelay="{objectView>/delay}">
+	<ObjectPageLayout id="ObjectPageLayout" subSectionLayout="TitleOnLeft" showTitleInHeaderContent="true" upperCaseAnchorBar="false">
+		<headerTitle>
+			<ObjectPageDynamicHeaderTitle>
+				<expandedHeading>
+					<m:VBox>
+						<m:Title text="{title}" wrapping="true" class="sapUiSmallMarginBottom"/>
+						<m:Image src="{bookPictureURL}" width="80px"/>
+					</m:VBox>
+				</expandedHeading>
+				<snappedHeading>
+					<m:FlexBox fitContainer="true" alignItems="Center">
+						<m:Image src="{bookPictureURL}" class="sapUiSmallMarginEnd" width="100px"/>
+						<m:Title text="{title}" wrapping="true" />
+					</m:FlexBox>
+				</snappedHeading>
+				<actions>
+					<m:Button text="Edit" type="Emphasized"/>
+					<m:Button type="Transparent" text="Delete"/>
+				</actions>
+			</ObjectPageDynamicHeaderTitle>
+		</headerTitle>
 
-		<semantic:titleHeading>
-			<Title text="{ID}" />
-		</semantic:titleHeading>
+		<headerContent>
+			<m:FlexBox wrap="Wrap" fitContainer="true">
+				<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+					<m:HBox>
+						<m:Label text="Price:" class="sapUiSmallMarginBeginEnd"/>
+						<m:ObjectNumber number="{
+												parts:[{path:'price'},{path:'currency_code'}],
+												type: 'sap.ui.model.type.Currency',
+												formatOptions: {showMeasure: false}
+											}" unit="{currency_code}" />
+					</m:HBox>
+				</layout:VerticalLayout>
 
-		<semantic:headerContent>
-			<ObjectNumber
-			/>
-		</semantic:headerContent>
+				<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+					<m:HBox>
+						<m:Label text="Stock:" class="sapUiSmallMarginBeginEnd"/>
+						<m:ObjectStatus class="sapUiSmallMarginBottom" text="{stock}" inverted="true" active="true" state="{
+                 								path: 'stock',
+                 								formatter: '.statusIndicatorColor'
+                						}"/>
+					</m:HBox>
+				</layout:VerticalLayout>
 
-		<semantic:sendEmailAction>
-			<semantic:SendEmailAction id="shareEmail" press=".onShareEmailPress"/>
-		</semantic:sendEmailAction>
+			</m:FlexBox>
+		</headerContent>
 
+		<sections>
+			<ObjectPageSection titleUppercase="false" title="Full description">
+				<subSections>
+					<ObjectPageSubSection title="Description" titleUppercase="false">
+						<m:Text text="{descr}"/>
+					</ObjectPageSubSection>
 
-	</semantic:SemanticPage>
+					<ObjectPageSubSection title="Genre" titleUppercase="false">
+						<blocks>
+							<m:Text text="{genre}"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection titleUppercase="false" title="Rating">
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+							<m:RatingIndicator id="idRI" class="sapUiSmallMarginBottom" value="{rating}" />
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection titleUppercase="false" title="Orders">
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+							<m:Table id="idOrdersTable" inset="false" items="{path:'orders',
+							parameters:{expand:'up_'}}">
+
+								<m:columns>
+									<m:Column width="12em">
+										<m:Text text="Customer name" />
+									</m:Column>
+									<m:Column>
+										<m:Text text="Delivery date" />
+									</m:Column>
+
+								</m:columns>
+								<m:items>
+									<m:ColumnListItem vAlign="Middle">
+										<m:cells>
+											<m:Text text="{up_/customerName}" />
+											<m:Text text="{up_/deliveryDate}" />
+										</m:cells>
+									</m:ColumnListItem>
+								</m:items>
+							</m:Table>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+	</ObjectPageLayout>
+
 
 </mvc:View>

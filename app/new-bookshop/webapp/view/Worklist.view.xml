@@ -14,15 +14,7 @@
 		</semantic:titleHeading>
 
 		<semantic:headerContent>
-			<smartFilterBar:SmartFilterBar 
-				id="idSmartFilterBar" 
-				persistencyKey="UniqueAndStablePersistencyKey" 
-				entitySet="Books" 
-				considerSelectionVariants="true"
-				enableBasicSearch="true" 
-				showClearButton="true"
-				useToolbar="false"
-				>
+			<smartFilterBar:SmartFilterBar id="idSmartFilterBar" persistencyKey="UniqueAndStablePersistencyKey" entitySet="Books" considerSelectionVariants="true" enableBasicSearch="true" showClearButton="true" useToolbar="false">
 				<smartFilterBar:layoutData>
 					<FlexItemData shrinkFactor="0"/>
 				</smartFilterBar:layoutData>
@@ -31,42 +23,28 @@
 		</semantic:headerContent>
 
 		<semantic:content>
-			<smartTable:SmartTable  
-				entitySet="Books" 
-				smartFilterId="idSmartFilterBar" 
-				useExportToExcel="true" 
-				beforeExport="onBeforeExport" 
-				useVariantManagement="true" 
-				useTablePersonalisation="true" 
-				header="{i18n>worklistTableTitle}" 
-				showRowCount="true" 
-				persistencyKey="SmartTableRefApp_Explored" 
-				enableAutoBinding="true" 
-				class="sapUiResponsiveContentPadding" 
-				tableType="ResponsiveTable" 
-				demandPopin="true" 
-				enableAutoColumnWidth="true" >
-				 <Table>
-                    <columns>
-                        <Column>
-                            <customData> 
-                                <core:CustomData key="p13nData" value='\{"columnKey": "rating", "columnIndex":"7","leadingProperty": "rating"}'/>
-                            </customData>
-                            <Label text="{i18n>tableNameColumnRating}" />
-                        </Column>
-                    </columns>
-                    <items>
-                        <ColumnListItem type="Navigation">
-                        <cells>
-                            <RatingIndicator id="idRI"  class="sapUiSmallMarginBottom" value="{rating}" />
-                        </cells>
-                    </ColumnListItem>
-                </items>
-                </Table>
+			<smartTable:SmartTable entitySet="Books" smartFilterId="idSmartFilterBar" useExportToExcel="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{i18n>worklistTableTitle}" showRowCount="true" persistencyKey="SmartTableRefApp_Explored" enableAutoBinding="true" class="sapUiResponsiveContentPadding" tableType="ResponsiveTable" demandPopin="true" enableAutoColumnWidth="true">
+				<Table>
+					<columns>
+						<Column>
+							<customData>
+								<core:CustomData key="p13nData" value='\{"columnKey": "rating", "columnIndex":"7","leadingProperty": "rating"}'/>
+							</customData>
+							<Label text="{i18n>tableNameColumnRating}" />
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem type="Navigation" press="onNavToObjectPage">
+							<cells>
+								<RatingIndicator id="idRI" class="sapUiSmallMarginBottom" value="{rating}" />
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
 			</smartTable:SmartTable>
 		</semantic:content>
 		<semantic:positiveAction>
-			<semantic:PositiveAction text="{i18n>buttonCreate}" press=" onOpenDialogCreateBook"/>
+			<semantic:PositiveAction text="{i18n>buttonCreate}" press="onOpenDialogCreateBook"/>
 		</semantic:positiveAction>
 	</semantic:SemanticPage>
 

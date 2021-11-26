@@ -7,19 +7,24 @@
   "private": true,
   "dependencies": {
     "@sap/cds": "^5",
-    "@sap/cds-odata-v2-adapter-proxy": "^1.7.16",
+    "@sap/cds-odata-v2-adapter-proxy": "^1.8.1",
     "express": "^4",
     "hdb": "^0.18.3"
   },
   "devDependencies": {
-    "@sap/ux-specification": "^1.90.13",
+    "@sap/ux-specification": "^1.90.14",
     "sqlite3": "^5.0.2"
   },
   "scripts": {
     "start": "cds run",
     "watch-bookshop": "cds watch --open bookshop/webapp/index.html#fe-lrop-v4",
     "watch-bookstore": "cds watch --open bookstore/webapp/index.html#fe-lrop-v4",
-    "watch-new-bookshop": "cds watch --open new-bookshop/webapp/index.html#fe-lrop-v4"
+    "watch-new-bookshop": "cds watch --open new-bookshop/webapp/index.html#fe-lrop-v4",
+    "watch-orders": "cds watch --open orders/webapp/index.html#fe-lrop-v4",
+    "watch-orders-v4": "cds watch --open orders-v4/webapp/index.html#fe-lrop-v4",
+    "watch-project1": "cds watch --open project1/webapp/index.html#fe-lrop-v4",
+    "watch-project12": "cds watch --open project12/webapp/index.html#fe-lrop-v4",
+    "watch-project1-items": "cds watch --open project1-items/webapp/index.html#fe-lrop-v4"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
@@ -49,7 +54,12 @@
   "sapux": [
     "app/bookshop",
     "app/bookstore",
-    "app/new-bookshop"
+    "app/new-bookshop",
+    "app/orders",
+    "app/orders-v4",
+    "app/project1",
+    "app/project12",
+    "app/project1-items"
   ],
   "cds": {
     "requires": {

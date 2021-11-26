@@ -7,31 +7,43 @@
 		<smartForm:SmartForm id="idSmartForm" class="editableForm" editTogglable="true" editable="true">
 			<smartForm:Group id="idGroupSmartForm">
 				<smartForm:GroupElement>
-					<smartField:SmartField id="idTitle-SF" value="{title}"/>
+					<smartField:SmartField id="idTitle-SF" value="{title}"  placeholder="Book title"/>
 				</smartForm:GroupElement>
 				<smartForm:GroupElement>
-					<smartField:SmartField id="idAuthor-SF" value="{author_ID}" textInEditModeSource="ValueList" />
+					<smartField:SmartField id="idAuthor-SF" value="{author_ID}" textInEditModeSource="ValueList" mandatory="true" placeholder="Select the author from the list" />
 				</smartForm:GroupElement>
 				<smartForm:GroupElement >
 					<smartField:SmartField id="idDescription-SF" value="{descr}" placeholder="Book description"/>
 				</smartForm:GroupElement>
 				<smartForm:GroupElement >
-					<smartField:SmartField id="idPicture-SF" value="{bookPictureURL}" placeholder="hgfdf"/>
+					<smartField:SmartField id="idPicture-SF" value="{bookPictureURL}" placeholder="Link to an image"/>
 				</smartForm:GroupElement>
 				<smartForm:GroupElement >
-					<smartField:SmartField id="idGenre-SF" value="{genre}" placeholder="hgfdf"/>
+					<smartField:SmartField id="idGenre-SF" value="{genre}" placeholder="Book genre"/>
 				</smartForm:GroupElement>
 				<smartForm:GroupElement>
-					<smartField:SmartField id="idStock-SF" value="{stock}" placeholder="hgfdf"/>
+					<smartField:SmartField id="idStock-SF" value="{stock}" placeholder="Current number of books" mandatory="true"/>
 				</smartForm:GroupElement>
 				<smartForm:GroupElement>
-					<smartField:SmartField id="idPrice-SF" value="{price}" placeholder="hgfdf"/>
+					<smartField:SmartField  id="idPrice-SF" 
+											value="{
+												path: 'price',
+												type: 'sap.ui.model.type.Float'
+												}"
+											placeholder="Price for book" 
+											mandatory="true"/>
 				</smartForm:GroupElement>
 				<smartForm:GroupElement>
-					<smartField:SmartField id="idRating-SF" value="{rating}" placeholder="1...5"/>
-				</smartForm:GroupElement>
-				<smartForm:GroupElement>
-					<smartField:SmartField id="idCurrency-SF" value="{currency_code}"/>
+					<smartField:SmartField  id="idRating-SF" 
+											value="{
+                    						path: 'rating',
+                    						type: 'sap.ui.model.type.Integer',
+                    						constraints:{
+                    						    minimum: 1,
+                    						    maximum: 5
+                    						  }
+                    						}" 
+											placeholder="1...5"/>
 				</smartForm:GroupElement>
 			</smartForm:Group>
 		</smartForm:SmartForm>
