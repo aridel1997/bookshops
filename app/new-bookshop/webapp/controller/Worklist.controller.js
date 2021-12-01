@@ -18,6 +18,9 @@ sap.ui.define(
         'use strict';
 
         return BaseController.extend('ns.newbookshop.controller.Worklist', {
+            /**
+             *
+             */
             onInit: function () {
                 var oModelFieldCreateBook = new JSONModel({
                     booksFields: {
@@ -37,7 +40,9 @@ sap.ui.define(
                     'modelColumnSort'
                 );
             },
-
+            /**
+             *
+             */
             onOpenDialogCreateBook: function () {
                 var oView = this.getView();
                 var oODataModel = oView.getModel();
@@ -62,6 +67,9 @@ sap.ui.define(
                 this.oDialog.open();
             },
 
+            /**
+             *
+             */
             onCreateBook: function () {
                 var oView = this.getView();
                 var oODataModel = oView.getModel();
@@ -90,13 +98,15 @@ sap.ui.define(
                     .getData().length;
                 console.log(sValidationErrorsNumber);
             },
-
+            /**
+             *
+             * @param {*} oEvent
+             */
             onNavToObjectPage: function (oEvent) {
                 var oCtx = oEvent.getSource().getBindingContext();
-                this.getRouter()
-                    .navTo('object', {
-                        objectId: oCtx.getObject("ID"),
-                    });
+                this.getRouter().navTo('object', {
+                    objectId: oCtx.getObject('ID'),
+                });
             },
         });
     }

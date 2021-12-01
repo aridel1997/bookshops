@@ -11,7 +11,7 @@ entity Books: cuid {
   price  : Decimal(9,2);
 
   currency_code : String;
-  orders : Association to many Orders.items on orders.book = $self;
+  orders : Association to many Orders on orders.book = $self;
   rating: Integer;
 }
 
@@ -27,10 +27,14 @@ entity Orders: cuid  {
     deliveryDate: Date @title: 'Delivery date';
     customerName: String;
     phoneNumber: String;
-    items : Composition of many { 
-        key book : Association to Books @assert.integrity:false;
-        amount: Integer;
-    };
+    book: Association to Books;
+    amount: Integer;
+
+    // items : Composition of many { 
+    //     key book : Association to Books @assert.integrity:false;
+    //     amount: Integer;
+    // };
+
     customerCity: String;
     customerStreet: String;
     customerHouseNumber: Integer;

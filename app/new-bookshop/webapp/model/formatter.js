@@ -14,7 +14,19 @@ sap.ui.define([] , function () {
 				return "";
 			}
 			return parseFloat(sValue).toFixed(2);
-		}
+		},
+
+		statusIndicatorColor: function (stock) {
+			var oIndicatorColor;
+			if (stock >= 10) {
+				oIndicatorColor = 'Success';
+			} else if (stock < 10 && stock > 0) {
+				oIndicatorColor = 'Warning';
+			} else {
+				oIndicatorColor = 'Error';
+			}
+			return oIndicatorColor;
+		},
 
 	};
 

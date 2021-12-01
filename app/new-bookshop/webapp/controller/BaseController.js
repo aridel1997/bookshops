@@ -1,14 +1,18 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/core/UIComponent",
-	"sap/m/library"
-], function (Controller, UIComponent, mobileLibrary) {
+	"sap/m/library",
+	"../model/formatter"
+], function (Controller, UIComponent, mobileLibrary, formatter) {
 	"use strict";
 
 	// shortcut for sap.m.URLHelper
 	var URLHelper = mobileLibrary.URLHelper;
 
 	return Controller.extend("ns.newbookshop.controller.BaseController", {
+
+		formatter: formatter,
+
 		/**
 		 * Convenience method for accessing the router.
 		 * @public

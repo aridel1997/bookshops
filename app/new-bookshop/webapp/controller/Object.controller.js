@@ -4,26 +4,50 @@ sap.ui.define(
         'sap/ui/model/json/JSONModel',
         'sap/ui/core/routing/History',
         '../model/formatter',
+        'sap/ui/table/Table',
     ],
-    function (BaseController, JSONModel, History, formatter) {
+    function (BaseController, JSONModel, History, formatter, Table) {
         'use strict';
 
         return BaseController.extend('ns.newbookshop.controller.Object', {
+            /**
+             *
+             */
             onInit: function () {
-                var oViewModel = new JSONModel({
-                    busy: true,
-                    delay: 0,
+                var oEnabled = new JSONModel({
+                    enabled: false,
                 });
+                this.setModel(oEnabled, 'objectEnabled');
 
                 this.getRouter()
                     .getRoute('object')
                     .attachPatternMatched(this._onObjectMatched, this);
-                this.setModel(oViewModel, 'objectView');
             },
 
+            /**
+             *
+             * @param {*} oEvent
+             */
+            enableDeleteButton: function (oEvent) {
+                var oGridTable = this.getView().byId('idOrdersGridTable');
+                var oDeleteButton = this.getView().byId('idDeleteButton');
+                var aRowId = oGridTable.getSelectedIndices();
+
+                if (aRowId.length !== 0) {
+                    oDeleteButton.setEnabled(true);
+                } else {
+                    oDeleteButton.setEnabled(false);
+                }
+            },
+
+            onDeleteOrders: function (oEvent) {},
+            /**
+             *
+             * @param {*} oEvent
+             */
             _onObjectMatched: function (oEvent) {
                 var that = this;
-                const sObjectId = oEvent.getParameter('arguments').objectId;
+                var sObjectId = oEvent.getParameter('arguments').objectId;
                 var oODataModel = this.getView().getModel();
                 oODataModel.metadataLoaded().then(function () {
                     var sKey = oODataModel.createKey('/Books', {
@@ -31,42 +55,8 @@ sap.ui.define(
                     });
                     that.getView().bindObject({
                         path: sKey,
+                        parameters: { expand: 'author' },
                     });
-                });
-            },
-
-            statusIndicatorColor: function (stock) {
-                var oIndicatorColor;
-                if (stock >= 10) {
-                    oIndicatorColor = 'Success';
-                } else if (stock < 10 && stock > 0) {
-                    oIndicatorColor = 'Warning';
-                } else {
-                    oIndicatorColor = 'Error';
-                }
-                return oIndicatorColor;
-            },
-
-            /**
-             * Binds the view to the object path.
-             * @function
-             * @param {string} sObjectPath path to the object to be bound
-             * @private
-             */
-            _bindView: function (sObjectPath) {
-                const oViewModel = this.getModel('objectView');
-                this.getView().bindElement({
-                    path: sObjectPath,
-                    parameters: { expand: 'author' },
-                    events: {
-                        //change: this._onBindingChange.bind(this),
-                        dataRequested: function () {
-                            oViewModel.setProperty('/busy', true);
-                        },
-                        dataReceived: function () {
-                            oViewModel.setProperty('/busy', false);
-                        },
-                    },
                 });
             },
         });
