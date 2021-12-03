@@ -18,30 +18,9 @@ sap.ui.define(
         'use strict';
 
         return BaseController.extend('ns.newbookshop.controller.Worklist', {
+
             /**
-             *
-             */
-            onInit: function () {
-                var oModelFieldCreateBook = new JSONModel({
-                    booksFields: {
-                        title: null,
-                        author: null,
-                        description: null,
-                        bookPictureURL: null,
-                        genre: null,
-                        stock: null,
-                        price: null,
-                        rating: null,
-                    },
-                });
-                this.oModelFieldCreateBook = oModelFieldCreateBook;
-                this.getView().setModel(
-                    oModelFieldCreateBook,
-                    'modelColumnSort'
-                );
-            },
-            /**
-             *
+             *onOpenDialogCreateBook - opens a dialog to create a new book
              */
             onOpenDialogCreateBook: function () {
                 var oView = this.getView();
@@ -68,7 +47,7 @@ sap.ui.define(
             },
 
             /**
-             *
+             *  onCreateBook - is used to create a book
              */
             onCreateBook: function () {
                 var oView = this.getView();
@@ -76,11 +55,10 @@ sap.ui.define(
                 var oCtx = this.oDialog.getBindingContext();
                 var sPath = oCtx.sPath;
                 var fl = 0;
-                // oODataModel.setProperty(`${sPath}/IsActiveEntity`, true);
 
-                let k = oCtx.getObject();
+                var k = oCtx.getObject();
 
-                for (let key in k) {
+                for (var key in k) {
                     if (key !== 'ID' && k[key] === undefined) {
                         fl++;
                     }
@@ -99,8 +77,8 @@ sap.ui.define(
                 console.log(sValidationErrorsNumber);
             },
             /**
-             *
-             * @param {*} oEvent
+             * onNavToObjectPage - go to page Object
+             * @param {Object} oEvent
              */
             onNavToObjectPage: function (oEvent) {
                 var oCtx = oEvent.getSource().getBindingContext();

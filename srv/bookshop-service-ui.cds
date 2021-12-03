@@ -20,14 +20,17 @@ annotate BookshopService.Authors with {
 
 
 annotate BookshopService.Orders with {
-    deliveryDate @title: 'Date';
-    customerName @title: 'Customer name';
-    phoneNumber @title: 'Phone number';
-    address @title: 'Address';
-    paymentMethod @title: 'Payment method';
-    totalCost @title: 'Total cost';
-    currency @title: 'Currency';
-
+    deliveryDate            @title : 'Date';
+    customerName            @title : 'Customer name';
+    phoneNumber             @title : 'Phone number';
+    paymentMethod           @title : 'Payment method';
+    totalCost               @title : 'Total cost';
+    currency_code           @title : 'Currency';
+    amount                  @title : 'Count';
+    customerCity            @title : 'Customer city';
+    customerStreet          @title : 'Customer street';
+    customerHouseNumber     @title : 'Сustomer house number';
+    customerApartmentNumber @title : 'Customer apartment number';
 }
 
 annotate BookshopService.Books with {
@@ -156,23 +159,21 @@ annotate BookshopService.Authors with {
     });
 }
 
-annotate BookshopService.Orders with @(
-    UI            : {
-        HeaderInfo         : {
-            TypeName       : 'Order',
-            TypeNamePlural : 'Orders',
-             Title          : {
-                $Type : 'UI.DataField',
-                Value : customerName
-            }
-        },
-
-        SelectionFields    : [customerName],
-
-        LineItem           : [
-            {Value : deliveryDate},
-            {Value : customerName},
-            {Value : paymentMethod},
-        ],
+annotate BookshopService.Orders with @(UI : {
+    HeaderInfo      : {
+        TypeName       : 'Order',
+        TypeNamePlural : 'Orders',
+        Title          : {
+            $Type : 'UI.DataField',
+            Value : customerName
+        }
     },
-) {};
+
+    SelectionFields : [customerName],
+
+    LineItem        : [
+        {Value : deliveryDate},
+        {Value : customerName},
+        {Value : paymentMethod},
+    ],
+}, ) {};

@@ -1,0 +1,141 @@
+<core:FragmentDefinition
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:smartForm="sap.ui.comp.smartform"
+        xmlns:smartField="sap.ui.comp.smartfield">
+
+    <Dialog
+            id="CreateOrder"
+            title="Create order">
+        <smartForm:SmartForm
+                id="idSmartForm"
+                class="editableForm"
+                editTogglable="true"
+                editable="true">
+            <smartForm:Group id="idGroupSmartForm">
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idCustomerNameSF"
+                            value="{
+                                path: 'customerName',
+                                type: 'sap.ui.model.type.String',
+                                constraints:{
+                                  minLength: 1
+                                } }"
+                            placeholder="Customer name"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idDeliveryDateSF"
+                            value="{
+                                path: 'deliveryDate',
+                                type: 'sap.ui.model.type.Date'
+                                }"
+                            placeholder="Delivery date"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idPhoneNumberSF"
+                            value="{
+                                path: 'phoneNumber',
+                                type: 'sap.ui.model.type.String'
+                                }"
+                            placeholder="Phone number"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idAmountSF"
+                            value="{
+                                path: 'amount',
+                                type: 'sap.ui.model.odata.type.Int32',
+                                constraints:{
+                                      minimum: 1
+                                    }
+                                }"
+                            placeholder="Count of books"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idCustomerCitySF"
+                            value="{
+                                path: 'customerCity',
+                                type: 'sap.ui.model.type.String',
+                                constraints:{
+                                  minLength: 1
+                                } }"
+                            placeholder="Customer city"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idCustomerStreetSF"
+                            value="{
+                                                path: 'customerStreet',
+                                                type: 'sap.ui.model.type.String',
+                                                constraints:{
+                                                  minLength: 1
+                                                } }"
+                            placeholder="Customer street"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idCustomerHouseNumberSF"
+                            value="{
+                                                path: 'customerHouseNumber',
+                                                type: 'sap.ui.model.type.String',
+                                                constraints:{
+                                                  minLength: 1
+                                                } }"
+                            placeholder="Customer house number"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idCustomerApartmentNumberSF"
+                            value="{
+                                path: 'customerApartmentNumber',
+                                type: 'sap.ui.model.odata.type.Int32',
+                                constraints:{
+                                      minimum: 1
+                                    }
+                                }"
+                            placeholder="Customer apartment number"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idPaymentMethodSF"
+                            value="{paymentMethod}"
+                            placeholder="Payment method"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idCurrencyCodeSF"
+                            value="{
+                         path: 'currency_code'
+                         }"
+                            placeholder="Currency code"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+            </smartForm:Group>
+        </smartForm:SmartForm>
+
+        <beginButton>
+            <Button
+                    text="Create"
+                    type="Emphasized"
+                    press="onCreateOrder" />
+        </beginButton>
+        <endButton>
+            <Button
+                    text="Cancel"
+                    press="onCloseDialog" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

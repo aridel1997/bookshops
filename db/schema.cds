@@ -29,12 +29,10 @@ entity Orders: cuid  {
     phoneNumber: String;
     book: Association to Books;
     amount: Integer;
-
     // items : Composition of many { 
     //     key book : Association to Books @assert.integrity:false;
     //     amount: Integer;
     // };
-
     customerCity: String;
     customerStreet: String;
     customerHouseNumber: Integer;
