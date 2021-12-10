@@ -1,72 +1,120 @@
-<mvc:View controllerName="ns.newbookshop.controller.Object"
-    xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.uxap"
-    xmlns:m="sap.m"
-    xmlns:grid="sap.ui.table">
+<mvc:View
+        controllerName="ns.newbookshop.controller.Object"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns="sap.uxap"
+        xmlns:m="sap.m"
+        xmlns:grid="sap.ui.table"
+        xmlns:cust="ns.newbookshop.control">
 
-    <ObjectPageLayout id="ObjectPageLayout" subSectionLayout="TitleOnLeft" upperCaseAnchorBar="false">
+    <ObjectPageLayout
+            id="ObjectPageLayout"
+            subSectionLayout="TitleOnLeft"
+            upperCaseAnchorBar="false">
         <headerTitle>
-            <ObjectPageHeader id="headerOP" objectTitle="{title}" objectSubtitle="{author/name}" objectImageURI="{bookPictureURL}" isObjectIconAlwaysVisible="true">
+            <ObjectPageHeader
+                    id="headerOP"
+                    objectTitle="{title}"
+                    objectSubtitle="{author/name}"
+                    objectImageURI="{bookPictureURL}"
+                    isObjectIconAlwaysVisible="true">
                 <actions>
-                    <m:Button type="Emphasized" text="{i18n>buttonEdit}" />
-                    <m:Button type="Transparent" text="{i18n>buttonDelete}"/>
+                    <m:Button
+                            type="Emphasized"
+                            text="{i18n>buttonEdit}" />
+                    <m:Button
+                            type="Transparent"
+                            text="{i18n>buttonDelete}"
+                            press="onDeleteBook" />
                 </actions>
             </ObjectPageHeader>
         </headerTitle>
 
         <headerContent>
-            <m:FlexBox wrap="Wrap" fitContainer="true">
+            <m:FlexBox
+                    wrap="Wrap"
+                    fitContainer="true">
                 <m:HBox>
                     <m:HBox class="sapUiLargeMarginEnd">
-                        <m:Label text="{i18n>labelPrice}" class="sapUiSmallMarginBeginEnd" />
-                        <m:ObjectNumber number="{
+                        <m:Label
+                                text="{i18n>labelPrice}"
+                                class="sapUiSmallMarginBeginEnd" />
+                        <m:ObjectNumber
+                                number="{
                                                 parts:[{path:'price'},{path:'currency_code'}],
                                                 type: 'sap.ui.model.type.Currency',
                                                 formatOptions: {showMeasure: false}
-                                            }" unit="{currency_code}" />
+                                            }"
+                                unit="{currency_code}" />
                     </m:HBox>
                     <m:HBox>
-                        <m:Label text="{i18n>labelStock}" class="sapUiSmallMarginBeginEnd"/>
-                        <m:ObjectStatus text="{stock}" inverted="true" active="false" state="{
+                        <m:Label
+                                text="{i18n>labelStock}"
+                                class="sapUiSmallMarginBeginEnd" />
+                        <m:ObjectStatus
+                                text="{stock}"
+                                inverted="true"
+                                active="false"
+                                state="{
                                                  path: 'stock',
                                                  formatter: '.formatter.statusIndicatorColor'
-                                        }"/>
+                                        }" />
                     </m:HBox>
                 </m:HBox>
             </m:FlexBox>
         </headerContent>
 
         <sections>
-            <ObjectPageSection titleUppercase="false" title="{i18n>titleFullDescription}">
+            <ObjectPageSection
+                    titleUppercase="false"
+                    title="{i18n>titleFullDescription}">
                 <subSections>
-                    <ObjectPageSubSection title="{i18n>titleDescription}" titleUppercase="false">
+                    <ObjectPageSubSection
+                            title="{i18n>titleDescription}"
+                            titleUppercase="false">
                         <blocks>
-                            <m:ExpandableText text="{descr}" overflowMode="InPlace" />
+                            <!-- <m:ExpandableText text="{descr}" overflowMode="InPlace" /> -->
+                            <cust:HideLongTextControl
+                                    text="{descr}"                          
+                                    hideLongText="onHideLongText" />
                         </blocks>
                     </ObjectPageSubSection>
 
-                    <ObjectPageSubSection title="{i18n>titleGenre}" titleUppercase="false">
-                        <blocks>
-                            <m:Text text="{genre}"/>
-                        </blocks>
+                    <ObjectPageSubSection
+                            title="
+                                    {i18n>
+                                titleGenre}" titleUppercase="false">
+                                <blocks>
+                                    <m:Text text="{genre}" />
+                                </blocks>
 
                     </ObjectPageSubSection>
                 </subSections>
             </ObjectPageSection>
-            <ObjectPageSection titleUppercase="false" title="{i18n>titleRating}">
+            <ObjectPageSection
+                    titleUppercase="false"
+                    title="{i18n>titleRating}">
                 <subSections>
                     <ObjectPageSubSection titleUppercase="false">
                         <blocks>
-                            <m:RatingIndicator id="idRI" class="sapUiSmallMarginBottom" value="{rating}" editable="false"/>
+                            <m:RatingIndicator
+                                    id="idRI"
+                                    class="sapUiSmallMarginBottom"
+                                    value="{rating}"
+                                    editable="false" />
                         </blocks>
                     </ObjectPageSubSection>
                 </subSections>
             </ObjectPageSection>
-            <ObjectPageSection titleUppercase="false" title="{i18n>titleOrders}">
+            <ObjectPageSection
+                    titleUppercase="false"
+                    title="{i18n>titleOrders}">
                 <subSections>
                     <ObjectPageSubSection titleUppercase="false">
                         <blocks>
-                            <m:Table id="idOrdersTable" inset="false" items="{ 
+                            <m:Table
+                                    id="idOrdersTable"
+                                    inset="false"
+                                    items="{ 
                                              path:'orders',
                                               sorter : {
                                                     path : 'customerName',
@@ -90,8 +138,8 @@
                                     <m:Column hAlign="End">
                                         <m:Text text="{i18n>tableNamePaymentMethod}" />
                                     </m:Column>
-
                                 </m:columns>
+
                                 <m:items>
                                     <m:ColumnListItem vAlign="Middle">
                                         <m:cells>
@@ -99,46 +147,88 @@
                                             <m:Text text="{path: 'deliveryDate', type: 'sap.ui.model.type.Date' }" />
                                             <m:Text text="{phoneNumber}" />
                                             <m:Text text="{amount}" />
-                                            <m:Text text="{paymentMethod}"/>
+                                            <m:Text text="{paymentMethod}" />
                                         </m:cells>
                                     </m:ColumnListItem>
                                 </m:items>
+                                
                             </m:Table>
 
                             <!-- grid -->
 
-                            <grid:Table alternateRowColors="true" rows="{orders}" id="idOrdersGridTable" visibleRowCount="7" rowSelectionChange="enableDeleteButton">
+                            <grid:Table
+                                    alternateRowColors="true"
+                                    rows="{orders}"
+                                    id="idOrdersGridTable"
+                                    visibleRowCount="7"
+                                    rowSelectionChange="onRowSelectionChange">
                                 <grid:extension>
                                     <m:OverflowToolbar style="Clear">
-                                        <m:Title id="title" text="{i18n>gridTableTitle}"/>
-                                        <m:ToolbarSpacer/>
-                                        <m:Button type="Transparent" text="{i18n>buttonGridTableDelete}" enabled="false" press="onDeleteOrders" id="idDeleteButton"/>
-                                        <m:Button text="{i18n>buttonGridTableCreate}" press="onOpenDialogCreateOrder" id="idCreateButton"/>
+                                        <m:Title
+                                                id="title"
+                                                text="{i18n>gridTableTitle}" />
+                                        <m:ToolbarSpacer />
+                                        <m:Button
+                                                type="Transparent"
+                                                text="{i18n>buttonGridTableDelete}"
+                                                enabled="{= !!${viewModel>/selectedItems/length} }"
+                                                press="onDeleteOrders"
+                                                id="idDeleteButton" />
+                                        <m:Button
+                                                text="{i18n>buttonGridTableCreate}"
+                                                press="onOpenDialogCreateOrder"
+                                                id="idCreateButton" />
                                     </m:OverflowToolbar>
                                 </grid:extension>
                                 <grid:columns>
-                                    <grid:Column width="10rem" sortProperty="customerName" sorted="true" filterProperty="customerName" filtered="true">
+                                    <grid:Column
+                                            width="10rem"
+                                            sortProperty="customerName"
+                                            sorted="true"
+                                            filterProperty="customerName"
+                                            filtered="true">
                                         <m:Label text="{i18n>gridTableNameColumnCustomerName}" />
                                         <grid:template>
-                                            <m:Text text="{customerName}" wrapping="false" />
+                                            <m:Text
+                                                    text="{customerName}"
+                                                    wrapping="false" />
                                         </grid:template>
                                     </grid:Column>
-                                    <grid:Column width="10rem" sortProperty="deliveryDate" sorted="true" filterProperty="deliveryDate" filterType="sap.ui.model.odata.type.Date" filtered="true" >
+                                    <grid:Column
+                                            width="10rem"
+                                            sortProperty="deliveryDate"
+                                            sorted="true"
+                                            filterProperty="deliveryDate"
+                                            filterType="sap.ui.model.odata.type.Date"
+                                            filtered="true">
                                         <m:Label text="{i18n>gridTableNameColumnDeliveryDate}" />
                                         <grid:template>
-                                            <m:Text text="{path: 'deliveryDate', type: 'sap.ui.model.type.Date' }" wrapping="false" />
+                                            <m:Text
+                                                    text="{path: 'deliveryDate', type: 'sap.ui.model.type.Date' }"
+                                                    wrapping="false" />
                                         </grid:template>
                                     </grid:Column>
                                     <grid:Column width="10rem">
                                         <m:Label text="{i18n>gridTableNameColumnPhoneNumber}" />
                                         <grid:template>
-                                            <m:Text text="{phoneNumber}" wrapping="false" />
+                                            <m:Text
+                                                    text="{phoneNumber}"
+                                                    wrapping="false" />
                                         </grid:template>
                                     </grid:Column>
-                                    <grid:Column width="7rem" sortProperty="amount" sorted="true" hAlign="End" filterProperty="amount" filterType="sap.ui.model.odata.type.Int32"  filtered="true">
+                                    <grid:Column
+                                            width="7rem"
+                                            sortProperty="amount"
+                                            sorted="true"
+                                            hAlign="End"
+                                            filterProperty="amount"
+                                            filterType="sap.ui.model.odata.type.Int32"
+                                            filtered="true">
                                         <m:Label text="{i18n>gridTableNameColumnCount}" />
                                         <grid:template>
-                                            <m:Text text="{amount}" wrapping="false" />
+                                            <m:Text
+                                                    text="{amount}"
+                                                    wrapping="false" />
                                         </grid:template>
                                     </grid:Column>
                                 </grid:columns>

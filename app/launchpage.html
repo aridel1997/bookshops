@@ -15,10 +15,28 @@
                         description: 'Bookshop',
                         additionalInformation: 'SAPUI5.Component=ns.bookstore',
                         applicationType: 'URL',
-                        url: './',
-                        navigationMode: 'embedded'
-                    }
-                }
+                        url: './bookstore/webapp',
+                        navigationMode: 'embedded',
+                    },
+                    'freestyleBookshop-app': {
+                        title: 'Freestyle Bookshop',
+                        description: 'Freestyle app Bookshop',
+                        additionalInformation:
+                            'SAPUI5.Component=ns.newbookshop',
+                        applicationType: 'URL',
+                        url: './new-bookshop/webapp',
+                        navigationMode: 'embedded',
+                    },
+                    'orders-app': {
+                        title: 'Orders',
+                        description: 'Fiori app OData v2',
+                        additionalInformation:
+                            'SAPUI5.Component=ns.orders',
+                        applicationType: 'URL',
+                        url: './orders/webapp',
+                        navigationMode: 'embedded',
+                    },
+                },
             };
         </script>
 
@@ -32,7 +50,7 @@
             data-sap-ui-bindingSyntax="complex"
         ></script>
         <script>
-            sap.ui.getCore().attachInit(function() {
+            sap.ui.getCore().attachInit(function () {
                 sap.ushell.Container.createRenderer().placeAt('content');
             });
         </script>

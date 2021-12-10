@@ -23,6 +23,7 @@ annotate BookshopService.Orders with {
     deliveryDate            @title : 'Date';
     customerName            @title : 'Customer name';
     phoneNumber             @title : 'Phone number';
+
     paymentMethod           @title : 'Payment method';
     totalCost               @title : 'Total cost';
     currency_code           @title : 'Currency';
@@ -123,6 +124,7 @@ annotate BookshopService.Books with @(
     sap.creatable : true
 ) {};
 
+
 annotate BookshopService.Books with {
     author @(Common : {
         Text            : author.name,
@@ -145,12 +147,16 @@ annotate BookshopService.Books with {
                     ValueListProperty : 'placeOfBirth'
                 }
             ]
-        }
+        },
+        ValueListWithFixedValues,
+        
     });
 
     price  @Measures.ISOCurrency : currency_code;
     title  @mandatory;
 };
+
+
 
 annotate BookshopService.Authors with {
     ID @(Common : {
@@ -176,4 +182,5 @@ annotate BookshopService.Orders with @(UI : {
         {Value : customerName},
         {Value : paymentMethod},
     ],
-}, ) {};
+},
+ ) {};
