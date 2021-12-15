@@ -1,59 +1,36 @@
+</body>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{{appTitle}}</title>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>New bookshop</title>
 
-        <script>
-            window['sap-ushell-config'] = {
-                defaultRenderer: 'fiori2',
-                applications: {
-                    'fe-lrop-v4': {
-                        title: 'Bookstore',
-                        description: 'Bookshop',
-                        additionalInformation: 'SAPUI5.Component=ns.bookstore',
-                        applicationType: 'URL',
-                        url: './bookstore/webapp',
-                        navigationMode: 'embedded',
-                    },
-                    'freestyleBookshop-app': {
-                        title: 'Freestyle Bookshop',
-                        description: 'Freestyle app Bookshop',
-                        additionalInformation:
-                            'SAPUI5.Component=ns.newbookshop',
-                        applicationType: 'URL',
-                        url: './new-bookshop/webapp',
-                        navigationMode: 'embedded',
-                    },
-                    'orders-app': {
-                        title: 'Orders',
-                        description: 'Fiori app OData v2',
-                        additionalInformation:
-                            'SAPUI5.Component=ns.orders',
-                        applicationType: 'URL',
-                        url: './orders/webapp',
-                        navigationMode: 'embedded',
-                    },
-                },
-            };
-        </script>
+<script id="sap-ui-bootstrap"
+			src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_fiori_3"
+			data-sap-ui-resourceroots='{
+				"ns.newbookshop": "./new-bookshop/webapp",
+                "ns.bookstore": "./bookstore/webapp",
+                "ns.orders": "./orders/webapp",
+                "ns.localFLP": "."
+			}'
+			data-sap-ui-oninit="module:ns/localFLP/initFlpSandbox"
+			data-sap-ui-compatVersion="edge"
+			data-sap-ui-async="true"
+			data-sap-ui-preload="async"
+			data-sap-ui-frameOptions="allow">
 
-        <script src="https://ui5.sap.com/test-resources/sap/ushell/bootstrap/sandbox.js"></script>
-        <script
-            src="https://ui5.sap.com/resources/sap-ui-core.js"
-            data-sap-ui-libs="sap.m, sap.ushell, sap.fe.templates"
-            data-sap-ui-compatVersion="edge"
-            data-sap-ui-theme="sap_fiori_3"
-            data-sap-ui-frameOptions="allow"
-            data-sap-ui-bindingSyntax="complex"
-        ></script>
-        <script>
-            sap.ui.getCore().attachInit(function () {
-                sap.ushell.Container.createRenderer().placeAt('content');
-            });
-        </script>
-    </head>
-    <body class="sapUiBody" id="content"></body>
+            
+	</script>
+
+    <script>
+        // function initFlpSandbox() {
+        //     sap.ui.require("")
+        // }
+    </script>
+
+</head>
+<body class="sapUiBody" id="content">
+</body>
 </html>

@@ -4,8 +4,17 @@ sap.ui.define(
         'sap/ui/core/UIComponent',
         'sap/m/library',
         '../model/formatter',
+        'sap/ui/core/ValueState',
+        'sap/m/MessageBox',
     ],
-    function (Controller, UIComponent, mobileLibrary, formatter) {
+    function (
+        Controller,
+        UIComponent,
+        mobileLibrary,
+        formatter,
+        ValueState,
+        MessageBox
+    ) {
         'use strict';
 
         // shortcut for sap.m.URLHelper
@@ -23,8 +32,62 @@ sap.ui.define(
                 return UIComponent.getRouterFor(this);
             },
 
-            onCloseDialog: function () {
-                this.oDialog.close();
+            _validateFields: function (aControls) {
+                var that = this;
+
+                var bValidationSuccess = true;
+                aControls.forEach((oControl) => {
+                    if (
+                        oControl.isA([
+                            'sap.ui.comp.smartfield.SmartField',
+                            'sap.m.InputBase',
+                        ])
+                    ) {
+                        console.log(oControl);
+                        if (!this.validateControlValue(oControl)) {
+                            bValidationSuccess = false;
+                        }
+                    }
+                });
+                return new Promise(function (resolve, reject) {
+                    try {
+                        if (!bValidationSuccess) {
+                            throw new Error(
+                                that.i18n('ConfirmationCreateBookError')
+                            );
+                        } else {
+                            resolve();
+                        }
+                    } catch (error) {
+                        MessageBox.show(error.message, {
+                            title: that.i18n('ConfirmationTitle'),
+                        });
+                        reject(error);
+                    }
+                });
+            },
+
+            validateControlValue: function (oControl) {
+                var bValidationSuccess = true;
+                try {
+                    oControl
+                        .getBinding('value')
+                        ?.getType()
+                        ?.validateValue(oControl.getValue());
+                    oControl
+                        .setValueState(ValueState.Success)
+                        .setValueStateText('');
+                } catch (error) {
+                    bValidationSuccess = false;
+                    oControl
+                        .setValueState(ValueState.Error)
+                        .setValueStateText(error.message);
+                }
+                return bValidationSuccess;
+            },
+
+            onCloseDialog: function (oEvent) {
+                oEvent.getSource().getParent().close();
             },
 
             /**
@@ -53,14 +116,8 @@ sap.ui.define(
              * @public
              * @returns {sap.ui.model.resource.ResourceModel} the resourceModel of the component
              */
-            getResourceBundle: function () {
+            i18n: function (text) {
                 return this.getOwnerComponent()
-                    .getModel('i18n')
-                    .getResourceBundle();
-            },
-
-            getI18n: function (text) {
-                return this.getView()
                     .getModel('i18n')
                     .getResourceBundle()
                     .getText(text);

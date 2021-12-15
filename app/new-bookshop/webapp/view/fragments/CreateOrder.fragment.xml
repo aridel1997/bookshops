@@ -22,7 +22,7 @@
                                 constraints:{
                                   minLength: 1
                                 } }"
-                            placeholder="Customer name"
+                            fieldGroupIds="idFormAddOrder"
                             mandatory="true" />
                 </smartForm:GroupElement>
                 <smartForm:GroupElement>
@@ -30,9 +30,10 @@
                             id="idDeliveryDateSF"
                             value="{
                                 path: 'deliveryDate',
-                                type: 'sap.ui.model.type.Date'
+                                type: 'sap.ui.model.odata.type.Date'
                                 }"
                             placeholder="Delivery date"
+                            fieldGroupIds="idFormAddOrder"
                             mandatory="true" />
                 </smartForm:GroupElement>
                 <smartForm:GroupElement>
@@ -42,7 +43,7 @@
                                 path: 'phoneNumber',
                                 type: 'sap.ui.model.type.String'
                                 }"
-                            placeholder="Phone number"
+                            fieldGroupIds="idFormAddOrder"
                             mandatory="true" />
                 </smartForm:GroupElement>
                 <smartForm:GroupElement>
@@ -50,11 +51,12 @@
                             id="idAmountSF"
                             value="{
                                 path: 'amount',
-                                type: 'sap.ui.model.odata.type.Int32',
+                                type: 'sap.ui.model.type.Integer',
                                 constraints:{
                                       minimum: 1
                                     }
                                 }"
+                            fieldGroupIds="idFormAddOrder"
                             placeholder="Count of books"
                             mandatory="true" />
                 </smartForm:GroupElement>
@@ -67,31 +69,31 @@
                                 constraints:{
                                   minLength: 1
                                 } }"
-                            placeholder="Customer city"
+                            fieldGroupIds="idFormAddOrder"
                             mandatory="true" />
                 </smartForm:GroupElement>
                 <smartForm:GroupElement>
                     <smartField:SmartField
                             id="idCustomerStreetSF"
                             value="{
-                                                path: 'customerStreet',
-                                                type: 'sap.ui.model.type.String',
-                                                constraints:{
-                                                  minLength: 1
-                                                } }"
-                            placeholder="Customer street"
+                                path: 'customerStreet',
+                                type: 'sap.ui.model.type.String',
+                                constraints:{
+                                  minLength: 1
+                                } }"
+                            fieldGroupIds="idFormAddOrder"
                             mandatory="true" />
                 </smartForm:GroupElement>
                 <smartForm:GroupElement>
                     <smartField:SmartField
                             id="idCustomerHouseNumberSF"
                             value="{
-                                                path: 'customerHouseNumber',
-                                                type: 'sap.ui.model.type.String',
-                                                constraints:{
-                                                  minLength: 1
-                                                } }"
-                            placeholder="Customer house number"
+                                path: 'customerHouseNumber',
+                                type: 'sap.ui.model.type.String',
+                                constraints:{
+                                  minLength: 1
+                                } }"
+                            fieldGroupIds="idFormAddOrder"
                             mandatory="true" />
                 </smartForm:GroupElement>
                 <smartForm:GroupElement>
@@ -104,24 +106,16 @@
                                       minimum: 1
                                     }
                                 }"
-                            placeholder="Customer apartment number"
+                                fieldGroupIds="idFormAddOrder"
                             mandatory="true" />
                 </smartForm:GroupElement>
                 <smartForm:GroupElement>
                     <smartField:SmartField
                             id="idPaymentMethodSF"
                             value="{paymentMethod}"
-                            placeholder="Payment method"
+                            fieldGroupIds="idFormAddOrder"
                             mandatory="true" />
-                </smartForm:GroupElement>
-                <smartForm:GroupElement>
-                    <smartField:SmartField
-                            id="idCurrencyCodeSF"
-                            value="{
-                         path: 'currency_code'
-                         }"
-                            placeholder="Currency code"
-                            mandatory="true" />
+                            
                 </smartForm:GroupElement>
             </smartForm:Group>
         </smartForm:SmartForm>

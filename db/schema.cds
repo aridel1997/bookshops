@@ -16,10 +16,8 @@ entity Books: cuid {
 }
 
 entity Authors : cuid {
-  name   : String(18);
-  dateOfBirth  : Date;
-  placeOfBirth: String;
-  dateOfDeath: Date;
+  name   : String(25);
+  surname:String(40);
   books  : Association to many Books on books.author = $self @assert.integrity:false;
 }
 
@@ -29,16 +27,10 @@ entity Orders: cuid  {
     phoneNumber: String;
     book: Association to Books;
     amount: Integer;
-    // items : Composition of many { 
-    //     key book : Association to Books @assert.integrity:false;
-    //     amount: Integer;
-    // };
     customerCity: String;
     customerStreet: String;
     customerHouseNumber: Integer;
     customerApartmentNumber: Integer;
-
     paymentMethod: String enum { Cash; CreditCard; Online};
     totalCost: Decimal(9,2);
-    currency_code : String;
 }

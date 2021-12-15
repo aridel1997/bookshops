@@ -1,0 +1,338 @@
+<core:FragmentDefinition
+        xmlns:m="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns="sap.uxap"
+        xmlns:grid="sap.ui.table"
+        xmlns:f="sap.ui.layout.form"
+        core:require="{formatMessage: 'sap/base/strings/formatMessage'}">
+
+    <ObjectPageLayout
+            id="ObjectPageLayoutEdit"
+            subSectionLayout="TitleOnLeft"
+            upperCaseAnchorBar="false"
+            visible="{viewModel>/bObjectBookEditable}">
+
+        <headerTitle>
+            <ObjectPageHeader
+                    id="headerOPEdit"
+                    objectTitle="{title}"
+                    objectSubtitle="{author/name}"
+                    objectImageURI="{bookPictureURL}"
+                    isObjectIconAlwaysVisible="true">
+                <actions>
+                    <m:Button
+                            type="Emphasized"
+                            text="{i18n>buttonSave}"
+                            press="onSaveBook" />
+                    <m:Button
+                            type="Transparent"
+                            text="{i18n>buttonDelete}"
+                            press="onDeleteBook" />
+                </actions>
+            </ObjectPageHeader>
+        </headerTitle>
+
+        <headerContent>
+
+            <f:Form
+                    id="FormToolbar"
+                    editable="true"
+                    ariaLabelledBy="Title1">
+
+                <f:layout>
+                    <f:ResponsiveGridLayout
+                            labelSpanXL="4"
+                            labelSpanL="3"
+                            labelSpanM="4"
+                            labelSpanS="12"
+                            adjustLabelSpan="false"
+                            emptySpanXL="0"
+                            emptySpanL="4"
+                            emptySpanM="0"
+                            emptySpanS="0"
+                            columnsXL="2"
+                            columnsL="1"
+                            columnsM="1"
+                            singleContainerFullSize="false" />
+                </f:layout>
+                <f:formContainers>
+                    <f:FormContainer ariaLabelledBy="Title2">
+                        <f:formElements>
+                            <f:FormElement label="{i18n>labelPrice}" required="true">
+                                <f:fields>
+                                    <m:Input
+                                            value="{
+                                        path: 'price',
+                                        type: 'sap.ui.model.type.Integer',
+                                        constraints:{
+                                              minimum: 1
+                                            }
+                                        }"
+                                            id="idInputPrice"
+                                            fieldGroupIds="idFieldEditBook" />
+                                    <m:Input
+                                            value="{
+                                                path: 'currency_code',
+                                                type: 'sap.ui.model.type.String',
+                                                constraints:{
+                                                    minLength: 3,
+                                                    maxLength: 3
+                                                } }"
+                                            id="idInputCurrency"
+                                            fieldGroupIds="idFieldEditBook" />
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="{i18n>labelStock}">
+                                <f:fields>
+                                    <m:Input
+                                            value="{stock}"
+                                            fieldGroupIds="idFieldEditBook" />
+                                </f:fields>
+                            </f:FormElement>
+                        </f:formElements>
+                    </f:FormContainer>
+                </f:formContainers>
+            </f:Form>
+        </headerContent>
+
+        <sections>
+            <ObjectPageSection
+                    titleUppercase="false"
+                    title="{i18n>titleFullDescription}">
+                <subSections>
+                    <ObjectPageSubSection
+                            title="Main Information"
+                            titleUppercase="false">
+                        <blocks>
+                            <m:Label
+                                    text="The book's title"
+                                    required="true" />
+                            <m:Input
+                                    value="{
+                                        path: 'title',
+                                        type: 'sap.ui.model.type.String',
+                                        constraints:{
+                                            minLength: 1
+                                        } }"
+                                    width="100%"
+                                    fieldGroupIds="idFieldEditBook" />
+                            <m:Label text="Author's name" />
+                            <m:Select
+                                    items="{
+                                        path: '/Authors',
+                                        sorter: { path: 'name' }
+                                      }"
+                                    selectedKey="{author_ID}">
+                                <m:items>
+                                    <core:Item
+                                            key="{ID}"
+                                            text="{parts: ['i18n>myComplexMessage', 'name', 'surname'], formatter: 'formatMessage'}" />
+                                </m:items>
+                            </m:Select>
+                            <m:Label text="The book's description" />
+                            <m:TextArea
+                                    fieldGroupIds="idFieldEditBook"
+                                    value="{
+                                        path: 'descr',
+                                        type: 'sap.ui.model.type.String'
+                                      }"
+                                    width="100%"
+                                    rows="4" />
+                        </blocks>
+                    </ObjectPageSubSection>
+
+                    <ObjectPageSubSection
+                            title="{i18n>titleGenre}"
+                            titleUppercase="false">
+                        <blocks>
+                            <m:Input
+                                    value="{
+                                        path: 'genre',
+                                        type: 'sap.ui.model.type.String'
+                                    }"
+                                    fieldGroupIds="idFieldEditBook" />
+                        </blocks>
+
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+            <ObjectPageSection
+                    titleUppercase="false"
+                    title="{i18n>titleRating}">
+                <subSections>
+                    <ObjectPageSubSection titleUppercase="false">
+                        <blocks>
+                            <m:RatingIndicator
+                                    id="idRIEdit"
+                                    class="sapUiSmallMarginBottom"
+                                    value="{rating}"
+                                    fieldGroupIds="idFieldEditBook" />
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+            <ObjectPageSection
+                    titleUppercase="false"
+                    title="{i18n>titleOrders}">
+                <subSections>
+                    <ObjectPageSubSection titleUppercase="false">
+                        <blocks>
+                            <!-- grid -->
+
+                            <grid:Table
+                                    alternateRowColors="true"
+                                    rows="{orders}"
+                                    id="idOrdersGridTableEdit"
+                                    visibleRowCount="7"
+                                    rowSelectionChange="onRowSelectionChange">
+                                <grid:extension>
+                                    <m:OverflowToolbar style="Clear">
+                                        <m:Title
+                                                id="idTitleGTEdit"
+                                                text="{i18n>gridTableTitle}" />
+                                        <m:ToolbarSpacer />
+                                        <m:Button
+                                                type="Transparent"
+                                                text="{i18n>buttonGridTableDelete}"
+                                                enabled="{= !!${viewModel>/selectedItems/length} }"
+                                                press="onDeleteOrders"
+                                                id="idDeleteButtonEdit" />
+                                        <m:Button
+                                                text="{i18n>buttonGridTableCreate}"
+                                                press="onOpenDialogCreateOrder"
+                                                id="idCreateButtonEdit" />
+                                    </m:OverflowToolbar>
+                                </grid:extension>
+                                <grid:columns>
+                                    <grid:Column
+                                            sortProperty="customerName"
+                                            sorted="true"
+                                            filterProperty="customerName"
+                                            filtered="true">
+                                        <m:Label text="{i18n>gridTableNameColumnCustomerName}" />
+                                        <grid:template>
+                                            <m:Input
+                                                    value="{
+                                                        path: 'customerName',
+                                                        type: 'sap.ui.model.odata.type.String',
+                                                        constraints:{
+                                                          minLength: 1
+                                                        } }"
+                                                    fieldGroupIds="idFieldEditBook" />
+                                        </grid:template>
+                                    </grid:Column>
+                                    <grid:Column
+                                            sortProperty="deliveryDate"
+                                            sorted="true"
+                                            filterProperty="deliveryDate"
+                                            filterType="sap.ui.model.odata.type.Date"
+                                            filtered="true">
+                                        <m:Label text="{i18n>gridTableNameColumnDeliveryDate}" />
+                                        <grid:template>
+
+                                            <m:DatePicker
+                                                    id="establishedStore"
+                                                    value="{
+                                                        path: 'deliveryDate', 
+                                                        type: 'sap.ui.model.type.Date' 
+                                                        }"
+                                                    fieldGroupIds="idFieldEditBook" />
+                                        </grid:template>
+                                    </grid:Column>
+                                    <grid:Column>
+                                        <m:Label text="{i18n>gridTableNameColumnPhoneNumber}" />
+                                        <grid:template>
+                                            <m:Input
+                                                    value="{
+                                                        path: 'phoneNumber',
+                                                        type: 'sap.ui.model.type.String'
+                                                        }"
+                                                    fieldGroupIds="idFieldEditBook" />
+                                        </grid:template>
+                                    </grid:Column>
+                                    <grid:Column
+                                            sortProperty="amount"
+                                            sorted="true"
+                                            hAlign="End"
+                                            filterProperty="amount"
+                                            filterType="sap.ui.model.odata.type.Int32"
+                                            filtered="true">
+                                        <m:Label text="{i18n>gridTableNameColumnCount}" />
+                                        <grid:template>
+                                            <m:Input
+                                                    value="{
+                                                        path: 'amount',
+                                                        type: 'sap.ui.model.type.Integer',
+                                                        constraints:{
+                                                              minimum: 1
+                                                            }
+                                                        }"
+                                                    fieldGroupIds="idFieldEditBook" />
+                                        </grid:template>
+                                    </grid:Column>
+                                    <grid:Column>
+                                        <m:Label text="{i18n>gridTableNameColumnCustomerCity}" />
+                                        <grid:template>
+                                            <m:Input
+                                                    value="{
+                                                        path: 'customerCity',
+                                                        type: 'sap.ui.model.type.String',
+                                                        constraints:{
+                                                          minLength: 1
+                                                        } }"
+                                                    fieldGroupIds="idFieldEditBook" />
+                                        </grid:template>
+                                    </grid:Column>
+                                    <grid:Column>
+                                        <m:Label text="{i18n>gridTableNameColumnCustomerStreet}" />
+                                        <grid:template>
+                                            <m:Input
+                                                    value="{
+                                                        path: 'customerStreet',
+                                                        type: 'sap.ui.model.type.String',
+                                                        constraints:{
+                                                          minLength: 1
+                                                        } }"
+                                                    fieldGroupIds="idFieldEditBook" />
+                                        </grid:template>
+                                    </grid:Column>
+                                    <grid:Column>
+                                        <m:Label text="{i18n>gridTableNameColumnCustomerHouseNumber}" />
+                                        <grid:template>
+                                            <m:Input
+                                                    value="{
+                                                        path: 'customerHouseNumber',
+                                                        type: 'sap.ui.model.type.String',
+                                                        constraints:{
+                                                          minLength: 1
+                                                        } }"
+                                                    fieldGroupIds="idFieldEditBook" />
+                                        </grid:template>
+                                    </grid:Column>
+                                    <grid:Column>
+                                        <m:Label text="{i18n>gridTableNameColumnPaymentMethod}" />
+                                        <grid:template>
+                                            <m:Select
+                                                    id="statusProduct"
+                                                    selectedKey="{paymentMethod}">
+                                                <core:Item
+                                                        key="Cash"
+                                                        text="{i18n>PaymentMethodCash}" />
+                                                <core:Item
+                                                        key="CreditCard"
+                                                        text="{i18n>PaymentMethodCreditCard}" />
+                                                <core:Item
+                                                        key="Online"
+                                                        text="{i18n>PaymentMethodOnline}" />
+                                            </m:Select>
+                                        </grid:template>
+                                    </grid:Column>
+                                </grid:columns>
+                            </grid:Table>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+    </ObjectPageLayout>
+</core:FragmentDefinition>

@@ -4,8 +4,17 @@ sap.ui.define(
         'sap/m/MessageToast',
         'sap/ui/core/ValueState',
         'sap/m/MessageBox',
+        'sap/ui/core/Fragment',
+        'sap/base/util/merge',
     ],
-    function (BaseController, MessageToast, ValueState, MessageBox) {
+    function (
+        BaseController,
+        MessageToast,
+        ValueState,
+        MessageBox,
+        Fragment,
+        fnMerge
+    ) {
         'use strict';
 
         return BaseController.extend('ns.newbookshop.controller.Worklist', {
@@ -16,85 +25,67 @@ sap.ui.define(
                 var oView = this.getView();
                 var oODataModel = oView.getModel();
                 var oEntryCtx = oODataModel.createEntry('/Books');
-
-                if (!this.oDialog) {
-                    this.oDialog = sap.ui.xmlfragment(
-                        oView.getId(),
-                        'ns.newbookshop.view.fragments.CreateBook',
-                        this
-                    );
-                    oView.addDependent(this.oDialog);
+                if (!this.pCreateBookDialog) {
+                    this.pCreateBookDialog = this.loadFragment({
+                        name: 'ns.newbookshop.view.fragments.CreateBook',
+                    });
                 }
+                this.pCreateBookDialog.then(function (oDialog) {
+                    oDialog.setBindingContext(oEntryCtx);
+                    oDialog.open();
+                });
+            },
 
-                this.oDialog.setBindingContext(oEntryCtx);
-                this.oDialog.setModel(oODataModel);
+            onOpenDialogAddAuthor: function () {
+                var oView = this.getView();
+                var oODataModel = oView.getModel();
+                var oEntryCtx = oODataModel.createEntry('/Authors', {
+                    groupId: 'author',
+                });
+                if (!this.pCreateAuthorDialog) {
+                    this.pCreateAuthorDialog = this.loadFragment({
+                        name: 'ns.newbookshop.view.fragments.AddAuthor',
+                    });
+                }
+                this.pCreateAuthorDialog.then(function (oDialog) {
+                    oDialog.setBindingContext(oEntryCtx);
+                    oDialog.open();
+                });
+            },
 
-                var oMessageManager = sap.ui.getCore().getMessageManager();
-
-                oMessageManager.registerObject(this.oDialog, true);
-                oView.setModel(oMessageManager.getMessageModel(), 'message');
-                this.oDialog.open();
+            onAddNewAuthor: function (oEvent) {
+                var oModel = this.getModel();
+                var oAuthorDialog = oEvent.getSource().getParent();
+                var that = this;
+                var aFormControls =
+                    oAuthorDialog.getControlsByFieldGroupId('idFormAddAuthor');
+                this._validateFields(aFormControls).then(function () {
+                    MessageToast.show(that.i18n('dvcfd'));
+                    oModel.submitChanges({
+                        groupId: 'author',
+                    });
+                    oAuthorDialog.close();
+                });
             },
 
             /**
              *  onCreateBook - is used to create a book
              */
-            onCreateBook: function () {
+            onCreateBook: function (oEvent) {
                 var that = this;
-                var oView = this.getView();
-                var oODataModel = oView.getModel();
+                var oBookDialog = oEvent.getSource().getParent();
+                var oODataModel = this.getView().getModel();
                 var aFormControls =
-                    this.oDialog.getControlsByFieldGroupId('idFormAddBook');
+                    this.getView().getControlsByFieldGroupId('idFormAddBook');
                 this._validateFields(aFormControls).then(function () {
-                    MessageToast.show(that.getI18n("ConfirmationCreateBookSuccess"));
+                    MessageToast.show(
+                        that.i18n('ConfirmationCreateBookSuccess')
+                    );
                     oODataModel.submitChanges();
-                    that.oDialog.close();
+                    oBookDialog.close(); //спросить!!!
                 });
             },
 
-            _validateFields: function (aControls) {
-                var that = this;
-
-                var bValidationSuccess = true;
-                aControls.forEach((oControl) => {
-                    if (oControl.isA('sap.ui.comp.smartfield.SmartField')) {
-                        if (!this.lala(oControl)) {
-                            bValidationSuccess = false;
-                        }
-                    }
-                });
-                return new Promise(function (resolve, reject) {
-                    try {
-                        if (!bValidationSuccess) {
-                            throw new Error(that.getI18n("ConfirmationCreateBookError"));
-                        } else {
-                            resolve();
-                        }
-                    } catch (error) {
-                        MessageBox.show(error.message,{title:that.getI18n("ConfirmationTitle")});
-                        reject(error);
-                    }
-                });
-            },
-
-            lala: function (oControl) {
-                var bValidationSuccess = true;
-                try {
-                    oControl
-                        .getBinding('value')
-                        .getType()
-                        ?.validateValue(oControl.getValue());
-                    oControl
-                        .setValueState(ValueState.Success)
-                        .setValueStateText('');
-                } catch (error) {
-                    bValidationSuccess = false;
-                    oControl
-                        .setValueState(ValueState.Error)
-                        .setValueStateText(error.message);
-                }
-                return bValidationSuccess;
-            },
             /**
              * onNavToObjectPage - go to page Object
              * @param {Object} oEvent

@@ -2,11 +2,10 @@ sap.ui.define(
     [
         './BaseController',
         'sap/ui/model/json/JSONModel',
-        '../model/formatter',
         'sap/m/MessageToast',
         'sap/m/MessageBox',
     ],
-    function (BaseController, JSONModel, formatter, MessageToast, MessageBox) {
+    function (BaseController, JSONModel, MessageToast, MessageBox) {
         'use strict';
 
         return BaseController.extend('ns.newbookshop.controller.Object', {
@@ -14,17 +13,18 @@ sap.ui.define(
              * Controller's "init" lifecycle method.
              */
             onInit: function () {
-                this.oSelectedFields = new JSONModel({
+                this.oViewModel = new JSONModel({
                     selectedItems: [],
+                    bObjectBookEditable: false,
                 });
-                this.setModel(this.oSelectedFields, 'viewModel');
+                this.setModel(this.oViewModel, 'viewModel');
 
                 this.getRouter()
                     .getRoute('object')
                     .attachPatternMatched(this._onObjectMatched, this);
             },
             onHideLongText: function (oEvent) {
-                debugger;
+                console.log('Have a nice day');
             },
 
             /**
@@ -35,7 +35,7 @@ sap.ui.define(
                 var oGridTable = this.getView().byId('idOrdersGridTable');
                 var aSelectedRowIdx = oGridTable.getSelectedIndices();
 
-                this.oSelectedFields.setProperty(
+                this.oViewModel.setProperty(
                     '/selectedItems',
                     aSelectedRowIdx
                         .map(oGridTable.getContextByIndex.bind(oGridTable))
@@ -57,12 +57,11 @@ sap.ui.define(
 
                 if (nOrders > 0) {
                     MessageToast.show(
-                        this.getI18n("ConfirmationDeleteBookWithOrders")
+                        this.i18n('ConfirmationDeleteBookWithOrders')
                     );
                 } else {
                     MessageBox.confirm(
-                       
-                        `${this.getI18n("ConfirmationDeleteBook")} ${sTitle}?`,
+                        `${this.i18n('ConfirmationDeleteBook')} ${sTitle}?`,
                         {
                             title: 'Confirmation',
                             initialFocus: sap.m.MessageBox.Action.CANCEL,
@@ -71,13 +70,17 @@ sap.ui.define(
                                     oODataModel.remove(sKey, {
                                         success: function () {
                                             MessageToast.show(
-                                                that.getI18n("ConfirmationDeleteBookOK")
+                                                that.i18n(
+                                                    'ConfirmationDeleteBookOK'
+                                                )
                                             );
                                             that.onNavToWorklist();
                                         },
                                         error: function () {
                                             MessageToast.show(
-                                                that.getI18n("ConfirmationDeleteBookError")
+                                                that.i18n(
+                                                    'ConfirmationDeleteBookError'
+                                                )
                                             );
                                         },
                                     });
@@ -97,70 +100,81 @@ sap.ui.define(
                 var oODataModel = oCtx.getModel();
                 var that = this;
 
-                this.oSelectedFields
+                this.oViewModel
                     .getProperty('/selectedItems')
                     .forEach((sRowPath) => {
                         oODataModel.remove(sRowPath, {
                             success: function () {
                                 MessageToast.show(
-                                    that.getI18n("ConfirmationDeleteOrderOK")
+                                    that.i18n('ConfirmationDeleteOrderOK')
                                 );
                             },
                             error: function () {
                                 MessageToast.show(
-                                    that.getI18n("ConfirmationDeleteOrderError")
+                                    that.i18n('ConfirmationDeleteOrderError')
                                 );
                             },
                         });
                     });
 
                 oODataModel.attachEventOnce('batchRequestCompleted', () => {
-                    MessageToast.show(
-                        that.getI18n("ConfirmationDeleteOrderOK")
-                    );
+                    MessageToast.show(that.i18n('ConfirmationDeleteOrderOK'));
                 });
             },
 
             onOpenDialogCreateOrder: function () {
                 var oView = this.getView();
                 var oODataModel = oView.getModel();
-                var sBookId = oView.getBindingContext().getProperty('ID');
-                var oEntryCtx = oODataModel.createEntry('/Orders', {
-                    properties: { book_ID: sBookId },
-                });
-
-                if (!this.oDialog) {
-                    this.oDialog = sap.ui.xmlfragment(
-                        oView.getId(),
-                        'ns.newbookshop.view.fragments.CreateOrder',
-                        this
-                    );
-                    oView.addDependent(this.oDialog);
+                var oEntryCtx = oODataModel.createEntry('/Orders');
+                if (!this.pCreateOrderDialog) {
+                    this.pCreateOrderDialog = this.loadFragment({
+                        name: 'ns.newbookshop.view.fragments.CreateOrder',
+                    });
                 }
+                this.pCreateOrderDialog.then(function (oDialog) {
+                    oDialog.setBindingContext(oEntryCtx);
+                    var oMessageManager = sap.ui.getCore().getMessageManager();
 
-                this.oDialog.setBindingContext(oEntryCtx);
-                this.oDialog.setModel(oODataModel);
-
-                var oMessageManager = sap.ui.getCore().getMessageManager();
-
-                oMessageManager.registerObject(this.oDialog, true);
-                oView.setModel(oMessageManager.getMessageModel(), 'message');
-                this.oDialog.open();
+                    oMessageManager.registerObject(oDialog, true);
+                    oView.setModel(
+                        oMessageManager.getMessageModel(),
+                        'message'
+                    );
+                    oDialog.open();
+                });
             },
+
             onCreateOrder: function () {
+                // idFormAddOrder
                 var oView = this.getView();
                 var oODataModel = oView.getModel();
-                var oCtx = this.oDialog.getBindingContext();
-                var sValidationErrorsNumber = this.getView()
-                    .getModel('message')
-                    .getData().length;
-
-                if (sValidationErrorsNumber > 0) {
-                    MessageToast.show('Please fill in the required fields');
-                } else {
+                var aFormControls =
+                    this.getView().getControlsByFieldGroupId('idFormAddOrder');
+                this._validateFields(aFormControls).then(function () {
+                    MessageToast.show(
+                        that.i18n('ConfirmationCreateBookSuccess')
+                    );
                     oODataModel.submitChanges();
-                    this.oDialog.close();
-                }
+                    oBookDialog.close();
+                });
+            },
+
+            onEditBook: function () {
+                this.oViewModel.setProperty('/bObjectBookEditable', true);
+            },
+
+            onSaveBook: function (oEvent) {
+                var oDataEdit = this.getView().getModel();
+                var that = this;
+                var oView = this.getView();
+
+                var aFormControls =
+                    oView.getControlsByFieldGroupId('idFieldEditBook');
+                this._validateFields(aFormControls).then(function () {
+                    MessageToast.show(that.i18n('fvfdvg'));
+                    oDataEdit.submitChanges();
+                    that.oViewModel.setProperty('/bObjectBookEditable', false);
+                });
             },
 
             /**
@@ -180,6 +194,43 @@ sap.ui.define(
                         parameters: { expand: 'author' },
                     });
                 });
+            },
+
+            onNavToOrders: function () {
+                if (
+                    sap.ushell &&
+                    sap.ushell.Container &&
+                    sap.ushell.Container.getService
+                ) {
+                    var service = sap.ushell.Container.getService(
+                        'CrossApplicationNavigation'
+                    );
+                    var sHref =
+                        service.hrefForExternal({
+                            target: {
+                                semanticObject: 'Orders',
+                                action: 'display',
+                            },
+                        }) || '';
+                    service.toExternal({
+                        target: {
+                            shelHash: sHref,
+                        },
+                    });
+                } else {
+                    console.log('xertebe');
+                }
+                //                     sap.ushell.Container.getServiceAsync("CrossApplicationNavigation").then( function (oService) {
+                // console.log("xertebe");
+                //                                     var sHref = oService.hrefForExternal({
+                //                                         target : {
+                //                                             semanticObject : "Orders",
+                //                                             action : "display" },
+
+                //                                     }) || "";
+                //                                oService.toExternal(sHref);
+
+                //                                  });
             },
 
             onNavToWorklist: function () {

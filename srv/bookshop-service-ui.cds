@@ -14,7 +14,7 @@ annotate BookshopService.Books with {
 
 annotate BookshopService.Authors with {
     name         @title : 'Name';
-    placeOfBirth @title : 'Place of birth';
+    surname @title : 'Surname';
 
 }
 
@@ -23,10 +23,8 @@ annotate BookshopService.Orders with {
     deliveryDate            @title : 'Date';
     customerName            @title : 'Customer name';
     phoneNumber             @title : 'Phone number';
-
     paymentMethod           @title : 'Payment method';
     totalCost               @title : 'Total cost';
-    currency_code           @title : 'Currency';
     amount                  @title : 'Count';
     customerCity            @title : 'Customer city';
     customerStreet          @title : 'Customer street';

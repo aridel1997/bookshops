@@ -1,6 +1,5 @@
 <mvc:View controllerName="ns.newbookshop.controller.Worklist"
 	xmlns="sap.m"
-	xmlns:form="sap.ui.layout.form"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:semantic="sap.f.semantic"
 	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
