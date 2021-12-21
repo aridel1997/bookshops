@@ -30,9 +30,8 @@
                             id="idDeliveryDateSF"
                             value="{
                                 path: 'deliveryDate',
-                                type: 'sap.ui.model.odata.type.Date'
+                                type: 'sap.ui.model.type.Date'
                                 }"
-                            placeholder="Delivery date"
                             fieldGroupIds="idFormAddOrder"
                             mandatory="true" />
                 </smartForm:GroupElement>
@@ -41,7 +40,10 @@
                             id="idPhoneNumberSF"
                             value="{
                                 path: 'phoneNumber',
-                                type: 'sap.ui.model.type.String'
+                                type: 'sap.ui.model.type.String',
+                                constraints:{
+                                    search: '\\S+@\\S+\\.\\S+'
+                                  }
                                 }"
                             fieldGroupIds="idFormAddOrder"
                             mandatory="true" />
@@ -57,7 +59,6 @@
                                     }
                                 }"
                             fieldGroupIds="idFormAddOrder"
-                            placeholder="Count of books"
                             mandatory="true" />
                 </smartForm:GroupElement>
                 <smartForm:GroupElement>
@@ -101,12 +102,12 @@
                             id="idCustomerApartmentNumberSF"
                             value="{
                                 path: 'customerApartmentNumber',
-                                type: 'sap.ui.model.odata.type.Int32',
+                                type: 'sap.ui.model.type.Number',
                                 constraints:{
                                       minimum: 1
                                     }
                                 }"
-                                fieldGroupIds="idFormAddOrder"
+                            fieldGroupIds="idFormAddOrder"
                             mandatory="true" />
                 </smartForm:GroupElement>
                 <smartForm:GroupElement>
@@ -115,7 +116,7 @@
                             value="{paymentMethod}"
                             fieldGroupIds="idFormAddOrder"
                             mandatory="true" />
-                            
+
                 </smartForm:GroupElement>
             </smartForm:Group>
         </smartForm:SmartForm>

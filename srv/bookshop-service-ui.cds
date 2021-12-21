@@ -14,7 +14,7 @@ annotate BookshopService.Books with {
 
 annotate BookshopService.Authors with {
     name         @title : 'Name';
-    surname @title : 'Surname';
+    surname      @title : 'Surname';
 
 }
 
@@ -33,9 +33,21 @@ annotate BookshopService.Orders with {
 }
 
 annotate BookshopService.Books with {
+    price @(Common : {
+        FieldControl : #Mandatory
+    });
+     descr @(Common : {
+        FieldControl : #Mandatory
+    });
+}
+
+
+
+annotate BookshopService.Books with {
     @UI.IsImageURL : true
     bookPictureURL
 };
+
 
 annotate BookshopService.Books with @(
     UI            : {
@@ -125,6 +137,7 @@ annotate BookshopService.Books with @(
 
 annotate BookshopService.Books with {
     author @(Common : {
+        
         Text            : author.name,
         TextArrangement : #TextOnly,
         ValueList       : {
@@ -142,7 +155,7 @@ annotate BookshopService.Books with {
                 },
                 {
                     $Type             : 'Common.ValueListParameterDisplayOnly',
-                    ValueListProperty : 'placeOfBirth'
+                    ValueListProperty : 'surname'
                 }
             ]
         },

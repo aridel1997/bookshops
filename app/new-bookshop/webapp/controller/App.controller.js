@@ -2,8 +2,10 @@ sap.ui.define(['./BaseController'], function (BaseController) {
     'use strict';
 
     return BaseController.extend('ns.newbookshop.controller.App', {
+        /**
+         * Controller's "init" lifecycle method.
+         */
         onInit: function () {
-            // apply content density mode to root view
             this.getView().addStyleClass(
                 this.getOwnerComponent().getContentDensityClass()
             );

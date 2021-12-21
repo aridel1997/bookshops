@@ -39,7 +39,7 @@ sap.ui.define([
 							"tiles": [{
 								"tileType": "sap.ushell.ui.tile.StaticTile",
 								"properties": {
-									"title": "Freestyle Bokshop",
+									"title": "Freestyle Bookshop",
 									"targetURL": "#Newbookshop-display"
 								},
 							},{
@@ -68,9 +68,7 @@ sap.ui.define([
 								"action": "display",
 								"description": "Own application",
 								"title": "New bookshop",
-								"signature": {
-									"parameters": {}
-								},
+								"signature": {},
 								"resolutionResult": {
 									"applicationType": "SAPUI5",
 									"additionalInformation": "SAPUI5.Component=ns.newbookshop",
@@ -97,7 +95,6 @@ sap.ui.define([
 								"description": "Own application",
 								"title": "Orders",
 								"signature": {
-									"parameters": {}
 								},
 								"resolutionResult": {
 									"applicationType": "SAPUI5",

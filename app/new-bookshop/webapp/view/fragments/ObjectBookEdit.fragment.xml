@@ -31,70 +31,6 @@
                 </actions>
             </ObjectPageHeader>
         </headerTitle>
-
-        <headerContent>
-
-            <f:Form
-                    id="FormToolbar"
-                    editable="true"
-                    ariaLabelledBy="Title1">
-
-                <f:layout>
-                    <f:ResponsiveGridLayout
-                            labelSpanXL="4"
-                            labelSpanL="3"
-                            labelSpanM="4"
-                            labelSpanS="12"
-                            adjustLabelSpan="false"
-                            emptySpanXL="0"
-                            emptySpanL="4"
-                            emptySpanM="0"
-                            emptySpanS="0"
-                            columnsXL="2"
-                            columnsL="1"
-                            columnsM="1"
-                            singleContainerFullSize="false" />
-                </f:layout>
-                <f:formContainers>
-                    <f:FormContainer ariaLabelledBy="Title2">
-                        <f:formElements>
-                            <f:FormElement label="{i18n>labelPrice}" required="true">
-                                <f:fields>
-                                    <m:Input
-                                            value="{
-                                        path: 'price',
-                                        type: 'sap.ui.model.type.Integer',
-                                        constraints:{
-                                              minimum: 1
-                                            }
-                                        }"
-                                            id="idInputPrice"
-                                            fieldGroupIds="idFieldEditBook" />
-                                    <m:Input
-                                            value="{
-                                                path: 'currency_code',
-                                                type: 'sap.ui.model.type.String',
-                                                constraints:{
-                                                    minLength: 3,
-                                                    maxLength: 3
-                                                } }"
-                                            id="idInputCurrency"
-                                            fieldGroupIds="idFieldEditBook" />
-                                </f:fields>
-                            </f:FormElement>
-                            <f:FormElement label="{i18n>labelStock}">
-                                <f:fields>
-                                    <m:Input
-                                            value="{stock}"
-                                            fieldGroupIds="idFieldEditBook" />
-                                </f:fields>
-                            </f:FormElement>
-                        </f:formElements>
-                    </f:FormContainer>
-                </f:formContainers>
-            </f:Form>
-        </headerContent>
-
         <sections>
             <ObjectPageSection
                     titleUppercase="false"
@@ -104,6 +40,47 @@
                             title="Main Information"
                             titleUppercase="false">
                         <blocks>
+                            <m:Label
+                                    text="Price"
+                                    required="true"
+                                    labelFor="idInputPrice" />
+                            <m:Input
+                                    value="{
+                                        path: 'price',
+                                        type: 'sap.ui.model.type.Float',
+                                        constraints:{
+                                                    minimum: 0.01
+                                                  }
+                                        }"
+                                    id="idInputPrice"
+                                    fieldGroupIds="idFieldEditBook" />
+                            <m:Label
+                                    text="Currency code"
+                                    required="true"
+                                    labelFor="idInputCurrency" />
+                            <m:Input
+                                    value="{
+                                        path: 'currency_code',
+                                        type: 'sap.ui.model.type.String',
+                                        constraints:{
+                                            minLength: 3,
+                                            maxLength: 3
+                                        } }"
+                                    id="idInputCurrency"
+                                    fieldGroupIds="idFieldEditBook" />
+                            <m:Label
+                                    text="{i18n>labelStock}"
+                                    labelFor="idInputStock" />
+                            <m:Input
+                                    id="idInputStock"
+                                    value="{
+                                        path: 'stock',
+                                        type: 'sap.ui.model.type.Integer',
+                                        constraints:{
+                                                        minimum: 0
+                                                      }
+                                        }"
+                                    fieldGroupIds="idFieldEditBook" />
                             <m:Label
                                     text="The book's title"
                                     required="true" />
@@ -185,24 +162,7 @@
                                     id="idOrdersGridTableEdit"
                                     visibleRowCount="7"
                                     rowSelectionChange="onRowSelectionChange">
-                                <grid:extension>
-                                    <m:OverflowToolbar style="Clear">
-                                        <m:Title
-                                                id="idTitleGTEdit"
-                                                text="{i18n>gridTableTitle}" />
-                                        <m:ToolbarSpacer />
-                                        <m:Button
-                                                type="Transparent"
-                                                text="{i18n>buttonGridTableDelete}"
-                                                enabled="{= !!${viewModel>/selectedItems/length} }"
-                                                press="onDeleteOrders"
-                                                id="idDeleteButtonEdit" />
-                                        <m:Button
-                                                text="{i18n>buttonGridTableCreate}"
-                                                press="onOpenDialogCreateOrder"
-                                                id="idCreateButtonEdit" />
-                                    </m:OverflowToolbar>
-                                </grid:extension>
+                               
                                 <grid:columns>
                                     <grid:Column
                                             sortProperty="customerName"
@@ -214,7 +174,7 @@
                                             <m:Input
                                                     value="{
                                                         path: 'customerName',
-                                                        type: 'sap.ui.model.odata.type.String',
+                                                        type: 'sap.ui.model.type.String',
                                                         constraints:{
                                                           minLength: 1
                                                         } }"
@@ -234,7 +194,7 @@
                                                     id="establishedStore"
                                                     value="{
                                                         path: 'deliveryDate', 
-                                                        type: 'sap.ui.model.type.Date' 
+                                                        type: 'sap.ui.model.type.Date'
                                                         }"
                                                     fieldGroupIds="idFieldEditBook" />
                                         </grid:template>
@@ -245,7 +205,10 @@
                                             <m:Input
                                                     value="{
                                                         path: 'phoneNumber',
-                                                        type: 'sap.ui.model.type.String'
+                                                        type: 'sap.ui.model.type.String',
+                                                        constraints:{
+                                                            minLength: 1
+                                                          }
                                                         }"
                                                     fieldGroupIds="idFieldEditBook" />
                                         </grid:template>
@@ -255,7 +218,7 @@
                                             sorted="true"
                                             hAlign="End"
                                             filterProperty="amount"
-                                            filterType="sap.ui.model.odata.type.Int32"
+                                            filterType="sap.ui.model.type.Integer"
                                             filtered="true">
                                         <m:Label text="{i18n>gridTableNameColumnCount}" />
                                         <grid:template>

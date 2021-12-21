@@ -47,19 +47,19 @@
               text="Add author"
               type="Emphasized"
               press="onOpenDialogAddAuthor"
-              class="sapUiLargeMarginEnd" 
-              width="30%"/>
+              class="sapUiLargeMarginEnd"
+              width="30%" />
         </smartForm:GroupElement>
         <smartForm:GroupElement>
           <smartField:SmartField
               id="idDescriptionSF"
               fieldGroupIds="idFormAddBook"
               value="{
-                                path: 'descr',
-                                type: 'sap.ui.model.type.String',
-                                constraints:{
-                                  minLength: 1
-                                } }"
+                    path: 'descr',
+                    type: 'sap.ui.model.type.String',
+                    constraints:{
+                      minLength: 1
+                    } }"
               app:fieldType="input"
               mandatory="true" />
         </smartForm:GroupElement>
@@ -93,11 +93,10 @@
                   path: 'stock',
                   type: 'sap.ui.model.type.Integer',
                   constraints:{
-                                  minimum: 1
+                                  minimum: 0
                                 }
                   }"
               placeholder="Current number of books"
-              mandatory="true"
               app:fieldType="input" />
         </smartForm:GroupElement>
         <smartForm:GroupElement>
@@ -117,10 +116,13 @@
         </smartForm:GroupElement>
         <smartForm:GroupElement>
           <smartField:SmartField
+              mandatory="true"
               id="idRating-SF"
               value="{
                   path: 'rating',
-                  type: 'sap.ui.model.type.Integer'
+                  type: 'sap.ui.model.type.Integer',
+                  constraints:{
+                  }
                   
                   }"
               fieldGroupIds="idFormAddBook"

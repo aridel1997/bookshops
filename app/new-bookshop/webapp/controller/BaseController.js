@@ -2,7 +2,6 @@ sap.ui.define(
     [
         'sap/ui/core/mvc/Controller',
         'sap/ui/core/UIComponent',
-        'sap/m/library',
         '../model/formatter',
         'sap/ui/core/ValueState',
         'sap/m/MessageBox',
@@ -10,15 +9,11 @@ sap.ui.define(
     function (
         Controller,
         UIComponent,
-        mobileLibrary,
         formatter,
         ValueState,
         MessageBox
     ) {
         'use strict';
-
-        // shortcut for sap.m.URLHelper
-        var URLHelper = mobileLibrary.URLHelper;
 
         return Controller.extend('ns.newbookshop.controller.BaseController', {
             formatter: formatter,
@@ -31,11 +26,51 @@ sap.ui.define(
             getRouter: function () {
                 return UIComponent.getRouterFor(this);
             },
+            /**
+             * Specifies the field in which the validation error occurs
+             * @param {string} sId - id fields, which has error
+             * @param {Object} oControl - control data
+             * @param {string} sMessage - error text
+             */
+            createMessage: function (sId, oControl, sMessage) {
+                var oMessageProcessor =
+                    new sap.ui.core.message.ControlMessageProcessor();
+                var oMessageManager = sap.ui.getCore().getMessageManager();
+                var that = this;
+                oMessageManager.addMessages(
+                    new sap.ui.core.message.Message({
+                        message: sMessage,
+                        type: sap.ui.core.MessageType.Error,
+                        target: `${sId}/value`,
+                        processor: oMessageProcessor,
+                    })
+                );
+                oControl.setValueState(ValueState.Error);
+            },
+            /**
+             * Removes errors from the field
+             * @param {string} sId
+             * @param {Object} oControl
+             */
+            deleteMessage: function (sId, oControl) {
+                var oMessageManager = sap.ui.getCore().getMessageManager();
+                var aMessages = oMessageManager.getMessageModel().getData();
+                var sMessage = aMessages.filter(function (mItem) {
+                    return mItem.target == `${sId}/value`;
+                });
+                sap.ui.getCore().getMessageManager().removeMessages(sMessage);
+                oControl.setValueState(ValueState.None);
+            },
 
+            /**
+             *
+             * @param {Array} - array of controls, which have fieldGroupIds
+             * @returns promise with resolve - if validation success or reject - if validation error
+             */
             _validateFields: function (aControls) {
                 var that = this;
-
                 var bValidationSuccess = true;
+
                 aControls.forEach((oControl) => {
                     if (
                         oControl.isA([
@@ -43,12 +78,25 @@ sap.ui.define(
                             'sap.m.InputBase',
                         ])
                     ) {
-                        console.log(oControl);
-                        if (!this.validateControlValue(oControl)) {
+                        if (oControl.isA('sap.m.DatePicker')) {
+                            var sProperty = oControl.getId();
+                            that.deleteMessage(sProperty, oControl);
+                            console.log(oControl.getDateValue());
+                            if (!oControl.getDateValue()) {
+                                bValidationSuccess = false;
+                                var sMessage = that.i18n('ConfirmationEnterDate');
+                                that.createMessage(
+                                    sProperty,
+                                    oControl,
+                                    sMessage
+                                );
+                            }
+                        } else if (!this.validateControlValue(oControl)) {
                             bValidationSuccess = false;
                         }
                     }
                 });
+
                 return new Promise(function (resolve, reject) {
                     try {
                         if (!bValidationSuccess) {
@@ -67,6 +115,11 @@ sap.ui.define(
                 });
             },
 
+            /**
+             *
+             * @param {Object} oControl
+             * @returns true/false - field validation result
+             */
             validateControlValue: function (oControl) {
                 var bValidationSuccess = true;
                 try {
@@ -86,6 +139,10 @@ sap.ui.define(
                 return bValidationSuccess;
             },
 
+            /**
+             * method for closing the dialog
+             * @param {Object} oEvent
+             */
             onCloseDialog: function (oEvent) {
                 oEvent.getSource().getParent().close();
             },
@@ -112,15 +169,15 @@ sap.ui.define(
             },
 
             /**
-             * Getter for the resource bundle.
-             * @public
-             * @returns {sap.ui.model.resource.ResourceModel} the resourceModel of the component
+             * get text from the i18n model
+             * @param {String} sI18nKey 
+             * @returns text
              */
-            i18n: function (text) {
+            i18n: function (sI18nKey) {
                 return this.getOwnerComponent()
                     .getModel('i18n')
                     .getResourceBundle()
-                    .getText(text);
+                    .getText(sI18nKey);
             },
         });
     }

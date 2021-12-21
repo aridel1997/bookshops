@@ -19,7 +19,7 @@ sap.ui.define(
 
         return BaseController.extend('ns.newbookshop.controller.Worklist', {
             /**
-             *onOpenDialogCreateBook - opens a dialog to create a new book
+             * Open a dialog to create a new book
              */
             onOpenDialogCreateBook: function () {
                 var oView = this.getView();
@@ -32,10 +32,20 @@ sap.ui.define(
                 }
                 this.pCreateBookDialog.then(function (oDialog) {
                     oDialog.setBindingContext(oEntryCtx);
+                    var oMessageManager = sap.ui.getCore().getMessageManager();
+
+                    oMessageManager.registerObject(oDialog, true);
+                    oView.setModel(
+                        oMessageManager.getMessageModel(),
+                        'message'
+                    );
                     oDialog.open();
                 });
             },
 
+            /**
+             * Open a dialog to add a new author
+             */
             onOpenDialogAddAuthor: function () {
                 var oView = this.getView();
                 var oODataModel = oView.getModel();
@@ -49,10 +59,21 @@ sap.ui.define(
                 }
                 this.pCreateAuthorDialog.then(function (oDialog) {
                     oDialog.setBindingContext(oEntryCtx);
+                    var oMessageManager = sap.ui.getCore().getMessageManager();
+
+                    oMessageManager.registerObject(oDialog, true);
+                    oView.setModel(
+                        oMessageManager.getMessageModel(),
+                        'message'
+                    );
                     oDialog.open();
                 });
             },
 
+            /**
+             * add a new author
+             * @param {Object} oEvent
+             */
             onAddNewAuthor: function (oEvent) {
                 var oModel = this.getModel();
                 var oAuthorDialog = oEvent.getSource().getParent();
@@ -60,16 +81,17 @@ sap.ui.define(
                 var aFormControls =
                     oAuthorDialog.getControlsByFieldGroupId('idFormAddAuthor');
                 this._validateFields(aFormControls).then(function () {
-                    MessageToast.show(that.i18n('dvcfd'));
+                    MessageToast.show(that.i18n('ConfirmationAddAuthorSuccess'));
                     oModel.submitChanges({
                         groupId: 'author',
                     });
                     oAuthorDialog.close();
                 });
+                
             },
 
             /**
-             *  onCreateBook - is used to create a book
+             *  Is used to create a book
              */
             onCreateBook: function (oEvent) {
                 var that = this;
@@ -82,12 +104,12 @@ sap.ui.define(
                         that.i18n('ConfirmationCreateBookSuccess')
                     );
                     oODataModel.submitChanges();
-                    oBookDialog.close(); //спросить!!!
+                    oBookDialog.close();
                 });
             },
 
             /**
-             * onNavToObjectPage - go to page Object
+             * Go to page Object
              * @param {Object} oEvent
              */
             onNavToObjectPage: function (oEvent) {

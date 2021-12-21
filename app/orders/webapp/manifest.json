@@ -39,6 +39,7 @@
         }
     },
     "sap.ui": {
+    
         "technology": "UI5",
         "icons": {
             "icon": "",
@@ -128,7 +129,7 @@
         "settings": {
             "forceGlobalRefresh": false,
             "objectPageHeaderType": "Dynamic",
-            "considerAnalyticalParameters": true,
+            "considerAnalyticalParameters": false,
             "showDraftToggle": false
         },
         "pages": {
@@ -136,22 +137,11 @@
                 "entitySet": "Orders",
                 "component": {
                     "name": "sap.suite.ui.generic.template.ListReport",
-                    "list": true,
-                    "settings": {
-                        "condensedTableLayout": true,
-                        "smartVariantManagement": true,
-                        "enableTableFilterInPageVariant": true,
-                        "filterSettings": {
-                            "dateSettings": {
-                                "useDateRange": true
-                            }
-                        }
-                    }
+                    "list": true
                 },
                 "pages": {
                     "ObjectPage|Orders": {
                         "entitySet": "Orders",
-                        "defaultLayoutTypeIfExternalNavigation": "MidColumnFullScreen",
                         "component": {
                             "name": "sap.suite.ui.generic.template.ObjectPage"
                         },
@@ -159,7 +149,6 @@
                           "ObjectPage|items":{
                             "navigationProperty": "items",
                             "entitySet": "Orders_items",
-                            "defaultLayoutTypeIfExternalNavigation": "MidColumnFullScreen",
                             "component": {
                               "name": "sap.suite.ui.generic.template.ObjectPage"
                             }

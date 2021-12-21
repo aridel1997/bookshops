@@ -23,15 +23,18 @@ sap.ui.define(
                     .getRoute('object')
                     .attachPatternMatched(this._onObjectMatched, this);
             },
-            onHideLongText: function (oEvent) {
-                console.log('Have a nice day');
+            /**
+             * Activates when the composite control is pressed
+             */
+            onHideLongText: function () {
+                var sMessage = this.i18n('Wish')
+                console.log(sMessage);
             },
 
             /**
-             * onRowSelectionChange -
-             * @param {Object} oEvent
+             * add path of the selected rows from the orders table to the oViewModel
              */
-            onRowSelectionChange: function (oEvent) {
+            onRowSelectionChange: function () {
                 var oGridTable = this.getView().byId('idOrdersGridTable');
                 var aSelectedRowIdx = oGridTable.getSelectedIndices();
 
@@ -43,6 +46,10 @@ sap.ui.define(
                 );
             },
 
+            /**
+             * Deletes a book if no orders
+             * @param {Object} oEvent
+             */
             onDeleteBook: function (oEvent) {
                 var oView = this.getView();
                 var sTitle = oView.getBindingContext().getProperty('title');
@@ -92,7 +99,7 @@ sap.ui.define(
             },
 
             /**
-             *
+             * Delete the selected orders
              * @param {Object} oEvent
              */
             onDeleteOrders: function (oEvent) {
@@ -100,28 +107,53 @@ sap.ui.define(
                 var oODataModel = oCtx.getModel();
                 var that = this;
 
-                this.oViewModel
-                    .getProperty('/selectedItems')
-                    .forEach((sRowPath) => {
-                        oODataModel.remove(sRowPath, {
-                            success: function () {
-                                MessageToast.show(
-                                    that.i18n('ConfirmationDeleteOrderOK')
-                                );
-                            },
-                            error: function () {
-                                MessageToast.show(
-                                    that.i18n('ConfirmationDeleteOrderError')
-                                );
-                            },
-                        });
-                    });
+                MessageBox.confirm(
+                    `${this.i18n('ConfirmationDeleteOrders')}`,
+                    {
+                        title: 'Confirmation',
+                        initialFocus: sap.m.MessageBox.Action.CANCEL,
+                        onClose: function (sButton) {
+                            if (sButton === MessageBox.Action.OK) {
+                                that.oViewModel
+                                    .getProperty('/selectedItems')
+                                    .forEach((sRowPath) => {
+                                        oODataModel.remove(sRowPath, {
+                                            success: function () {
+                                                MessageToast.show(
+                                                    that.i18n(
+                                                        'ConfirmationDeleteOrderOK'
+                                                    )
+                                                );
+                                            },
+                                            error: function () {
+                                                MessageToast.show(
+                                                    that.i18n(
+                                                        'ConfirmationDeleteOrderError'
+                                                    )
+                                                );
+                                            },
+                                        });
+                                    });
 
-                oODataModel.attachEventOnce('batchRequestCompleted', () => {
-                    MessageToast.show(that.i18n('ConfirmationDeleteOrderOK'));
-                });
+                                oODataModel.attachEventOnce(
+                                    'batchRequestCompleted',
+                                    () => {
+                                        MessageToast.show(
+                                            that.i18n(
+                                                'ConfirmationDeleteOrderOK'
+                                            )
+                                        );
+                                    }
+                                );
+                            }
+                        },
+                    }
+                );
             },
 
+            /**
+             * open the dialog to create an order
+             */
             onOpenDialogCreateOrder: function () {
                 var oView = this.getView();
                 var oODataModel = oView.getModel();
@@ -144,8 +176,10 @@ sap.ui.define(
                 });
             },
 
+            /**
+             * create a new order
+             */
             onCreateOrder: function () {
-                // idFormAddOrder
                 var oView = this.getView();
                 var oODataModel = oView.getModel();
                 var aFormControls =
@@ -159,11 +193,17 @@ sap.ui.define(
                 });
             },
 
+            /**
+             * changes the appearance of the fragment
+             */
             onEditBook: function () {
                 this.oViewModel.setProperty('/bObjectBookEditable', true);
             },
 
-            onSaveBook: function (oEvent) {
+            /**
+             * save changes
+             */
+            onSaveBook: function () {
                 var oDataEdit = this.getView().getModel();
                 var that = this;
                 var oView = this.getView();
@@ -171,14 +211,14 @@ sap.ui.define(
                 var aFormControls =
                     oView.getControlsByFieldGroupId('idFieldEditBook');
                 this._validateFields(aFormControls).then(function () {
-                    MessageToast.show(that.i18n('fvfdvg'));
+                    MessageToast.show(that.i18n('ConfirmationEditBook'));
                     oDataEdit.submitChanges();
                     that.oViewModel.setProperty('/bObjectBookEditable', false);
                 });
             },
 
             /**
-             *
+             * 
              * @param {Object} oEvent
              */
             _onObjectMatched: function (oEvent) {
@@ -196,6 +236,9 @@ sap.ui.define(
                 });
             },
 
+            /**
+             * Go to app Orders
+             */
             onNavToOrders: function () {
                 if (
                     sap.ushell &&
@@ -214,25 +257,15 @@ sap.ui.define(
                         }) || '';
                     service.toExternal({
                         target: {
-                            shelHash: sHref,
+                            shellHash: sHref,
                         },
                     });
-                } else {
-                    console.log('xertebe');
                 }
-                //                     sap.ushell.Container.getServiceAsync("CrossApplicationNavigation").then( function (oService) {
-                // console.log("xertebe");
-                //                                     var sHref = oService.hrefForExternal({
-                //                                         target : {
-                //                                             semanticObject : "Orders",
-                //                                             action : "display" },
-
-                //                                     }) || "";
-                //                                oService.toExternal(sHref);
-
-                //                                  });
             },
 
+            /**
+             * Go to page worklist
+             */
             onNavToWorklist: function () {
                 this.getOwnerComponent().getRouter().navTo('worklist');
             },
