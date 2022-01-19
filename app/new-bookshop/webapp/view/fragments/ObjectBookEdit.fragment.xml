@@ -4,13 +4,15 @@
         xmlns="sap.uxap"
         xmlns:grid="sap.ui.table"
         xmlns:f="sap.ui.layout.form"
-        core:require="{formatMessage: 'sap/base/strings/formatMessage'}">
+        core:require="{formatMessage: 'sap/base/strings/formatMessage'}"
+        xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 
     <ObjectPageLayout
             id="ObjectPageLayoutEdit"
             subSectionLayout="TitleOnLeft"
             upperCaseAnchorBar="false"
-            visible="{viewModel>/bObjectBookEditable}">
+            visible="{viewModel>/bObjectBookEditable}"
+            showFooter="true">
 
         <headerTitle>
             <ObjectPageHeader
@@ -22,12 +24,10 @@
                 <actions>
                     <m:Button
                             type="Emphasized"
+                            enabled="{=!${message>/}.length}"
                             text="{i18n>buttonSave}"
                             press="onSaveBook" />
-                    <m:Button
-                            type="Transparent"
-                            text="{i18n>buttonDelete}"
-                            press="onDeleteBook" />
+
                 </actions>
             </ObjectPageHeader>
         </headerTitle>
@@ -40,6 +40,7 @@
                             title="Main Information"
                             titleUppercase="false">
                         <blocks>
+
                             <m:Label
                                     text="Price"
                                     required="true"
@@ -162,7 +163,7 @@
                                     id="idOrdersGridTableEdit"
                                     visibleRowCount="7"
                                     rowSelectionChange="onRowSelectionChange">
-                               
+
                                 <grid:columns>
                                     <grid:Column
                                             sortProperty="customerName"
@@ -196,7 +197,8 @@
                                                         path: 'deliveryDate', 
                                                         type: 'sap.ui.model.type.Date'
                                                         }"
-                                                    fieldGroupIds="idFieldEditBook" />
+                                                    fieldGroupIds="idFieldEditBook"
+                                                    app:fieldType="datePicker" />
                                         </grid:template>
                                     </grid:Column>
                                     <grid:Column>
@@ -297,5 +299,29 @@
                 </subSections>
             </ObjectPageSection>
         </sections>
+        <footer>
+            <m:OverflowToolbar>
+                <!-- <m:ToolbarSpacer/> -->
+
+                <m:Button
+                        id="messagePopoverButton"
+                        icon="sap-icon://message-popup"
+                        type="Emphasized"
+                        text="{=${message>/}.length}"
+                        visible="{=!!${message>/}.length}"
+                        press=".onOpenMessages" />
+            </m:OverflowToolbar>
+        </footer>
+        <dependents>
+            <m:MessagePopover
+                    id="messages"
+                    items="{message>/}">
+                <m:MessageItem 
+                        type="{message>type}"
+                        title="{message>message}"
+                        subtitle="{message>additionalText}"
+                        description="{message>description}"/>
+            </m:MessagePopover>
+        </dependents>
     </ObjectPageLayout>
 </core:FragmentDefinition>

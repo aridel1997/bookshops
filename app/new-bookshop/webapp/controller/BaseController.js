@@ -6,13 +6,7 @@ sap.ui.define(
         'sap/ui/core/ValueState',
         'sap/m/MessageBox',
     ],
-    function (
-        Controller,
-        UIComponent,
-        formatter,
-        ValueState,
-        MessageBox
-    ) {
+    function (Controller, UIComponent, formatter, ValueState, MessageBox) {
         'use strict';
 
         return Controller.extend('ns.newbookshop.controller.BaseController', {
@@ -70,6 +64,7 @@ sap.ui.define(
             _validateFields: function (aControls) {
                 var that = this;
                 var bValidationSuccess = true;
+                debugger
 
                 aControls.forEach((oControl) => {
                     if (
@@ -78,20 +73,26 @@ sap.ui.define(
                             'sap.m.InputBase',
                         ])
                     ) {
-                        if (oControl.isA('sap.m.DatePicker')) {
-                            var sProperty = oControl.getId();
-                            that.deleteMessage(sProperty, oControl);
-                            console.log(oControl.getDateValue());
-                            if (!oControl.getDateValue()) {
-                                bValidationSuccess = false;
-                                var sMessage = that.i18n('ConfirmationEnterDate');
-                                that.createMessage(
-                                    sProperty,
-                                    oControl,
-                                    sMessage
-                                );
-                            }
-                        } else if (!this.validateControlValue(oControl)) {
+                      
+                        // if (
+                        //     oControl.isA('sap.m.DatePicker')
+                        // ) {
+                        //     console.log(oControl)
+                        //     var sProperty = oControl.getId();
+                        //     that.deleteMessage(sProperty, oControl);
+                        //     if (!oControl.getDateValue()) {
+                        //         bValidationSuccess = false;
+                        //         var sMessage = that.i18n(
+                        //             'ConfirmationEnterDate'
+                        //         );
+                        //         that.createMessage(
+                        //             sProperty,
+                        //             oControl,
+                        //             sMessage
+                        //         );
+                        //     }
+                        // } else 
+                        if (!this.validateControlValue(oControl)) {
                             bValidationSuccess = false;
                         }
                     }
@@ -170,7 +171,7 @@ sap.ui.define(
 
             /**
              * get text from the i18n model
-             * @param {String} sI18nKey 
+             * @param {String} sI18nKey
              * @returns text
              */
             i18n: function (sI18nKey) {

@@ -16,18 +16,26 @@ sap.ui.define(
                 this.oViewModel = new JSONModel({
                     selectedItems: [],
                     bObjectBookEditable: false,
+                    sFrameVideo:"",
                 });
                 this.setModel(this.oViewModel, 'viewModel');
 
                 this.getRouter()
                     .getRoute('object')
                     .attachPatternMatched(this._onObjectMatched, this);
+                this.oMessageManager = sap.ui.getCore().getMessageManager();
+                this.oMessageManager.registerObject(this.getView(), true);
+                this.setModel(
+                    this.oMessageManager.getMessageModel(),
+                    'message'
+                );
             },
+
             /**
              * Activates when the composite control is pressed
              */
             onHideLongText: function () {
-                var sMessage = this.i18n('Wish')
+                var sMessage = this.i18n('Wish');
                 console.log(sMessage);
             },
 
@@ -107,48 +115,44 @@ sap.ui.define(
                 var oODataModel = oCtx.getModel();
                 var that = this;
 
-                MessageBox.confirm(
-                    `${this.i18n('ConfirmationDeleteOrders')}`,
-                    {
-                        title: 'Confirmation',
-                        initialFocus: sap.m.MessageBox.Action.CANCEL,
-                        onClose: function (sButton) {
-                            if (sButton === MessageBox.Action.OK) {
-                                that.oViewModel
-                                    .getProperty('/selectedItems')
-                                    .forEach((sRowPath) => {
-                                        oODataModel.remove(sRowPath, {
-                                            success: function () {
-                                                MessageToast.show(
-                                                    that.i18n(
-                                                        'ConfirmationDeleteOrderOK'
-                                                    )
-                                                );
-                                            },
-                                            error: function () {
-                                                MessageToast.show(
-                                                    that.i18n(
-                                                        'ConfirmationDeleteOrderError'
-                                                    )
-                                                );
-                                            },
-                                        });
+                MessageBox.confirm(`${this.i18n('ConfirmationDeleteOrders')}`, {
+                    title: 'Confirmation',
+                    initialFocus: sap.m.MessageBox.Action.CANCEL,
+                    onClose: function (sButton) {
+                        if (sButton === MessageBox.Action.OK) {
+                            that.oViewModel
+                                .getProperty('/selectedItems')
+                                .forEach((sRowPath) => {
+                                    oODataModel.remove(sRowPath, {
+                                        success: function () {
+                                            MessageToast.show(
+                                                that.i18n(
+                                                    'ConfirmationDeleteOrderOK'
+                                                )
+                                            );
+                                            oODataModel.refresh(true);
+                                        },
+                                        error: function () {
+                                            MessageToast.show(
+                                                that.i18n(
+                                                    'ConfirmationDeleteOrderError'
+                                                )
+                                            );
+                                        },
                                     });
+                                });
 
-                                oODataModel.attachEventOnce(
-                                    'batchRequestCompleted',
-                                    () => {
-                                        MessageToast.show(
-                                            that.i18n(
-                                                'ConfirmationDeleteOrderOK'
-                                            )
-                                        );
-                                    }
-                                );
-                            }
-                        },
-                    }
-                );
+                            oODataModel.attachEventOnce(
+                                'batchRequestCompleted',
+                                () => {
+                                    MessageToast.show(
+                                        that.i18n('ConfirmationDeleteOrderOK')
+                                    );
+                                }
+                            );
+                        }
+                    },
+                });
             },
 
             /**
@@ -182,6 +186,14 @@ sap.ui.define(
             onCreateOrder: function () {
                 var oView = this.getView();
                 var oODataModel = oView.getModel();
+                // var oToday = new Date();
+                // oToday.setHours(0, 0, 0, 0);
+                // this.byId('establishedStore')
+                //     .getBinding('value')
+                //     ?.getType()
+                //     ?.setConstraints({
+                //         minimum: oToday,
+                //     });
                 var aFormControls =
                     this.getView().getControlsByFieldGroupId('idFormAddOrder');
                 this._validateFields(aFormControls).then(function () {
@@ -210,6 +222,7 @@ sap.ui.define(
 
                 var aFormControls =
                     oView.getControlsByFieldGroupId('idFieldEditBook');
+
                 this._validateFields(aFormControls).then(function () {
                     MessageToast.show(that.i18n('ConfirmationEditBook'));
                     oDataEdit.submitChanges();
@@ -217,8 +230,12 @@ sap.ui.define(
                 });
             },
 
+            onOpenMessages: function (oEvent) {
+                this.byId('messages').openBy(oEvent.getSource());
+            },
+
             /**
-             * 
+             *
              * @param {Object} oEvent
              */
             _onObjectMatched: function (oEvent) {
@@ -229,11 +246,13 @@ sap.ui.define(
                     var sKey = oODataModel.createKey('/Books', {
                         ID: sObjectId,
                     });
+                    
                     that.getView().bindObject({
                         path: sKey,
                         parameters: { expand: 'author' },
                     });
                 });
+                debugger
             },
 
             /**

@@ -20,7 +20,7 @@
                     isObjectIconAlwaysVisible="true">
                 <actions>
                     <m:Button
-                            type="Emphasized"
+                            type="Transparent"
                             text="{i18n>buttonOrders}"
                             press="onNavToOrders" />
                     <m:Button

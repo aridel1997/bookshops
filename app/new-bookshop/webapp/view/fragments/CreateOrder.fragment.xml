@@ -114,8 +114,7 @@
                     <smartField:SmartField
                             id="idPaymentMethodSF"
                             value="{paymentMethod}"
-                            fieldGroupIds="idFormAddOrder"
-                            mandatory="true" />
+                            fieldGroupIds="idFormAddOrder"/>
 
                 </smartForm:GroupElement>
             </smartForm:Group>

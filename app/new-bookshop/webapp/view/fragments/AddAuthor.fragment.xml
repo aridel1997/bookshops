@@ -18,11 +18,12 @@
           <smartField:SmartField
               id="idNameAuthorSF"
               value="{
-                          path: 'name',
-                          type: 'sap.ui.model.type.String',
-                          constraints: {
-                            minLength: 1
-                          }}"
+                  path: 'name',
+                  type: 'sap.ui.model.type.String',
+                  constraints: {
+                    minLength: 1
+                  }
+                }"
               fieldGroupIds="idFormAddAuthor"
               app:fieldType="input" />
         </smartForm:GroupElement>
@@ -30,14 +31,15 @@
           <smartField:SmartField
               id="idSurameAuthorSF"
               value="{
-                          path: 'surname',
-                          type: 'sap.ui.model.type.String',
-                          constraints: {
-                            minLength: 1
-                          }}"
+                      path: 'surname',
+                      type: 'sap.ui.model.type.String',
+                      constraints: {
+                        minLength: 1
+                      }
+                    }"
               fieldGroupIds="idFormAddAuthor"
               app:fieldType="input" />
-        </smartForm:GroupElement>    
+        </smartForm:GroupElement>
 
 
       </smartForm:Group>
@@ -45,7 +47,7 @@
 
     <beginButton>
       <Button
-          text="Create author"
+          text="{i18n>CreateAuthor}"
           type="Emphasized"
           press="onAddNewAuthor" />
     </beginButton>

@@ -6,6 +6,7 @@ sap.ui.define(
         'sap/m/MessageBox',
         'sap/ui/core/Fragment',
         'sap/base/util/merge',
+        'sap/ui/model/json/JSONModel'
     ],
     function (
         BaseController,
@@ -13,11 +14,24 @@ sap.ui.define(
         ValueState,
         MessageBox,
         Fragment,
-        fnMerge
+        fnMerge,
+        JSONModel
     ) {
         'use strict';
 
         return BaseController.extend('ns.newbookshop.controller.Worklist', {
+
+            onInit: function () {
+                this.oViewModel = new JSONModel();
+
+                this.oViewModel.loadData("http://localhost:3000/categories");
+            
+                this.setModel(this.oViewModel, 'viewModel');
+
+            },
+
+            
+
             /**
              * Open a dialog to create a new book
              */
