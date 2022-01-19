@@ -69,11 +69,7 @@ sap.ui.define([
 								"description": "Own application",
 								"title": "New bookshop",
 								"signature": {
-<<<<<<< HEAD
-									"parameters": {}
-=======
 									"parameters": {},
->>>>>>> 6246ac50d658228606acf230f8d54e4bc2001d40
 								},
 								"resolutionResult": {
 									"applicationType": "SAPUI5",
@@ -101,11 +97,7 @@ sap.ui.define([
 								"description": "Own application",
 								"title": "Orders",
 								"signature": {
-<<<<<<< HEAD
-									"parameters": {}
-=======
 									"parameters": {},
->>>>>>> 6246ac50d658228606acf230f8d54e4bc2001d40
 								},
 								"resolutionResult": {
 									"applicationType": "SAPUI5",
