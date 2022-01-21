@@ -69,7 +69,7 @@ sap.ui.define([
 								"description": "Own application",
 								"title": "New bookshop",
 								"signature": {
-									"parameters": {}
+									"parameters": {},
 								},
 								"resolutionResult": {
 									"applicationType": "SAPUI5",
@@ -97,7 +97,7 @@ sap.ui.define([
 								"description": "Own application",
 								"title": "Orders",
 								"signature": {
-									"parameters": {}
+									"parameters": {},
 								},
 								"resolutionResult": {
 									"applicationType": "SAPUI5",
