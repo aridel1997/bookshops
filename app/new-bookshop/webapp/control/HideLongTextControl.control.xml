@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
+	<HBox>
+		<Text text="{$this>text}"  class="sapUiSmallMargin" id="idText"/>
+		<Link press="handleHelp"  text="less" id="idLink" visible="{path:'$this>text', formatter:'.myFormatter'}"/>
+	</HBox>
+</core:FragmentDefinition>

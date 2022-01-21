@@ -1,0 +1,95 @@
+<mvc:View
+		controllerName="ns.newbookshop.controller.Worklist"
+		xmlns="sap.m"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:semantic="sap.f.semantic"
+		xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+		xmlns:smartTable="sap.ui.comp.smarttable"
+		xmlns:core="sap.ui.core"
+		xmlns:video="ns.newbookshop.control">
+
+	<semantic:SemanticPage
+	id="idSemanticPage"
+			showFooter="true"
+			fitContent="true"
+			headerExpanded="{viewModel>/bHeaderExpandedVisible}">
+
+		<semantic:titleHeading>
+			<Title
+					text="{i18n>worklistTitle}"
+					id="idTitleText" />
+		</semantic:titleHeading>
+
+		<semantic:headerContent>
+			<smartFilterBar:SmartFilterBar
+					id="idSmartFilterBar"
+					persistencyKey="UniqueAndStablePersistencyKey"
+					entitySet="Books"
+					considerSelectionVariants="true"
+					enableBasicSearch="true"
+					showClearButton="true"
+					filterBarExpanded="false"
+					useToolbar="false">
+				<smartFilterBar:layoutData>
+					<FlexItemData shrinkFactor="0" />
+				</smartFilterBar:layoutData>
+
+			</smartFilterBar:SmartFilterBar>
+		</semantic:headerContent>
+
+		<semantic:content>
+			<smartTable:SmartTable
+					entitySet="Books"
+					smartFilterId="idSmartFilterBar"
+					useExportToExcel="true"
+					useVariantManagement="true"
+					useTablePersonalisation="true"
+					header="{i18n>worklistTableTitle}"
+					showRowCount="true"
+					persistencyKey="SmartTableRefApp_Explored"
+					enableAutoBinding="true"
+					class="sapUiResponsiveContentPadding"
+					tableType="ResponsiveTable"
+					enableAutoColumnWidth="true">
+				<Table>
+					<columns>
+						<Column>
+							<customData>
+								<core:CustomData
+										key="p13nData"
+										value='\{"columnKey": "rating", "columnIndex":"7","leadingProperty": "rating"}' />
+							</customData>
+							<Label text="{i18n>tableNameColumnRating}" />
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem
+								type="Navigation"
+								press="onNavToObjectPage">
+							<cells>
+								<RatingIndicator
+										id="idRI"
+										class="sapUiSmallMarginBottom"
+										value="{rating}" />
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</smartTable:SmartTable>
+			<!-- <List
+					headerText="Products"
+					items="{path: 'viewModel>/'}">
+				<StandardListItem
+						title="{viewModel>name}"
+						counter="{viewModel>id}"/>
+			</List> -->
+			<video:VideoControl id="video" class="sapUiSmallMarginBeginEnd" change="onHideFilter"/>
+		</semantic:content>
+		<semantic:positiveAction>
+			<semantic:PositiveAction
+					text="{i18n>buttonCreate}"
+					press="onOpenDialogCreateBook" />
+		</semantic:positiveAction>
+	</semantic:SemanticPage>
+
+</mvc:View>

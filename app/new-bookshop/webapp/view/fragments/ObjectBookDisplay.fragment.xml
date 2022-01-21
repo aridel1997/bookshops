@@ -1,0 +1,291 @@
+<core:FragmentDefinition
+        xmlns:m="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns="sap.uxap"
+        xmlns:grid="sap.ui.table"
+        xmlns:cust="ns.newbookshop.control">
+
+    <ObjectPageLayout
+            id="ObjectPageLayout"
+            subSectionLayout="TitleOnLeft"
+            upperCaseAnchorBar="false"
+            visible="{= !${viewModel>/bObjectBookEditable}}">
+
+        <headerTitle>
+            <ObjectPageHeader
+                    id="headerOP"
+                    objectTitle="{title}"
+                    objectSubtitle="{author/name}"
+                    objectImageURI="{bookPictureURL}"
+                    isObjectIconAlwaysVisible="true">
+                <actions>
+                    <m:Button
+                            type="Transparent"
+                            text="{i18n>buttonOrders}"
+                            press="onNavToOrders" />
+                    <m:Button
+                            type="Emphasized"
+                            text="{i18n>buttonEdit}"
+                            press="onEditBook" />
+                    <m:Button
+                            type="Transparent"
+                            text="{i18n>buttonDelete}"
+                            press="onDeleteBook" />
+                </actions>
+            </ObjectPageHeader>
+        </headerTitle>
+
+        <headerContent>
+
+            <m:Label
+                    text="{i18n>labelPrice}"
+                    class="sapUiSmallMarginBeginEnd" />
+            <m:ObjectNumber
+                    number="{
+                        parts:[{path:'price'},{path:'currency_code'}],
+                        type: 'sap.ui.model.type.Currency',
+                        formatOptions: {showMeasure: false}
+                    }"
+                    unit="{currency_code}" />
+
+            <m:Label
+                    text="{i18n>labelStock}"
+                    class="sapUiSmallMarginBeginEnd" />
+            <m:ObjectStatus
+                    inverted="true"
+                    text="{stock}"
+                    state="{
+                         path: 'stock',
+                         formatter: '.formatter.statusIndicatorColor'
+                        }" />
+
+        </headerContent>
+
+        <sections>
+            <ObjectPageSection
+                    titleUppercase="false"
+                    title="{i18n>titleFullDescription}">
+                <subSections>
+                    <ObjectPageSubSection
+                            title="{i18n>titleDescription}"
+                            titleUppercase="false">
+                        <blocks>
+                            <!-- <m:ExpandableText text="{descr}" overflowMode="InPlace" /> -->
+                            <cust:HideLongTextControl
+                                    text="{descr}"
+                                    hideLongText="onHideLongText" />
+                        </blocks>
+                    </ObjectPageSubSection>
+
+                    <ObjectPageSubSection
+                            title="{i18n>titleGenre}"
+                            titleUppercase="false">
+                        <blocks>
+                            <m:Text text="{genre}" />
+                        </blocks>
+
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+            <ObjectPageSection
+                    titleUppercase="false"
+                    title="{i18n>titleRating}">
+                <subSections>
+                    <ObjectPageSubSection titleUppercase="false">
+                        <blocks>
+                            <m:RatingIndicator
+                                    id="idRI"
+                                    class="sapUiSmallMarginBottom"
+                                    value="{rating}"
+                                    editable="false" />
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+            <ObjectPageSection
+                    titleUppercase="false"
+                    title="{i18n>titleOrders}">
+                <subSections>
+                    <ObjectPageSubSection titleUppercase="false">
+                        <blocks>
+                            <m:VBox>
+
+                                <grid:Table
+                                        alternateRowColors="true"
+                                        rows="{orders}"
+                                        id="idOrdersGridTable"
+                                        visibleRowCount="7"
+                                        rowSelectionChange="onRowSelectionChange"
+                                        class="sapUiLargeMarginBottom">
+                                    <grid:extension>
+                                        <m:OverflowToolbar style="Clear">
+                                            <m:Title
+                                                    id="title"
+                                                    text="{i18n>gridTableTitle}" />
+                                            <m:ToolbarSpacer />
+                                            <m:Button
+                                                    type="Transparent"
+                                                    text="{i18n>buttonGridTableDelete}"
+                                                    enabled="{= !!${viewModel>/selectedItems/length} }"
+                                                    press="onDeleteOrders"
+                                                    id="idDeleteButton" />
+                                            <m:Button
+                                                    text="{i18n>buttonGridTableCreate}"
+                                                    press="onOpenDialogCreateOrder"
+                                                    id="idCreateButton" />
+                                        </m:OverflowToolbar>
+                                    </grid:extension>
+                                    <grid:columns>
+                                        <grid:Column
+                                                sortProperty="customerName"
+                                                sorted="true"
+                                                filterProperty="customerName"
+                                                filtered="true">
+                                            <m:Label text="{i18n>gridTableNameColumnCustomerName}" />
+                                            <grid:template>
+                                                <m:Text
+                                                        text="{customerName}"
+                                                        wrapping="false" />
+                                            </grid:template>
+                                        </grid:Column>
+                                        <grid:Column
+                                        
+                                                sortProperty="deliveryDate"
+                                                sorted="true"
+                                                filterProperty="deliveryDate"
+                                                filterType="sap.ui.model.odata.type.Date"
+                                                filtered="true">
+                                            <m:Label text="{i18n>gridTableNameColumnDeliveryDate}" />
+                                            <grid:template>
+                                                <m:Text
+                                                        text="{path: 'deliveryDate', type: 'sap.ui.model.type.Date' }"
+                                                        wrapping="false" />
+                                            </grid:template>
+                                        </grid:Column>
+                                        <grid:Column
+                                                filterProperty="phoneNumber"
+                                                filtered="true">
+                                            <m:Label text="{i18n>gridTableNameColumnPhoneNumber}" />
+                                            <grid:template>
+                                                <m:Text
+                                                        text="{phoneNumber}"
+                                                        wrapping="false" />
+                                            </grid:template>
+                                        </grid:Column>
+                                        <grid:Column
+                                                sortProperty="amount"
+                                                sorted="true"
+                                                hAlign="End"
+                                                filterProperty="amount"
+                                                filterType="sap.ui.model.odata.type.Int32"
+                                                filtered="true">
+                                            <m:Label text="{i18n>gridTableNameColumnCount}" />
+                                            <grid:template>
+                                                <m:Text
+                                                        text="{amount}"
+                                                        wrapping="false" />
+                                            </grid:template>
+                                        </grid:Column>
+                                        <grid:Column
+                                                sortProperty="customerCity"
+                                                sorted="true"
+                                                filterProperty="customerCity"
+                                                filtered="true">
+                                            <m:Label text="{i18n>gridTableNameColumnCustomerCity}" />
+                                            <grid:template>
+                                                <m:Text
+                                                        text="{customerCity}"
+                                                        wrapping="false" />
+                                            </grid:template>
+                                        </grid:Column>
+                                        <grid:Column
+                                        sortProperty="customerStreet"
+                                        sorted="true"
+                                        filterProperty="customerStreet"
+                                        filtered="true">
+                                    <m:Label text="{i18n>gridTableNameColumnCustomerStreet}" />
+                                    <grid:template>
+                                        <m:Text
+                                                text="{customerStreet}"
+                                                wrapping="false" />
+                                    </grid:template>
+                                </grid:Column>
+                                        <grid:Column
+                                                filterProperty="customerHouseNumber"
+                                                filtered="true">
+                                            <m:Label text="{i18n>gridTableNameColumnCustomerHouseNumber}" />
+                                            <grid:template>
+                                                <m:Text
+                                                        text="{customerHouseNumber}"
+                                                        wrapping="false" />
+                                            </grid:template>
+                                        </grid:Column>
+                                        <grid:Column
+                                                
+                                                sortProperty="paymentMethod"
+                                                sorted="true"
+                                                hAlign="End"
+                                                filterProperty="paymentMethod"
+                                                filtered="true">
+                                            <m:Label text="{i18n>gridTableNameColumnPaymentMethod}" />
+                                            <grid:template>
+                                                <m:Text
+                                                        text="{paymentMethod}"
+                                                        wrapping="false" />
+                                            </grid:template>
+                                        </grid:Column>
+                                    </grid:columns>
+                                </grid:Table>
+
+                                <m:Table
+                                        id="idOrdersTable"
+                                        inset="false"
+                                        items="{ 
+                                    path:'orders',
+                                     sorter : {
+                                           path : 'customerName',
+                                           group : true
+                                       }
+                                     }">
+
+                                    <m:columns>
+                                        <m:Column width="12em">
+                                            <m:Text text="{i18n>tableNameColumnCustomerName}" />
+                                        </m:Column>
+                                        <m:Column>
+                                            <m:Text text="{i18n>tableNameColumnDeliveryDate}" />
+                                        </m:Column>
+                                        <m:Column width="12em">
+                                            <m:Text text="{i18n>tableNameColumnPhoneNumber}" />
+                                        </m:Column>
+                                        <m:Column hAlign="End">
+                                            <m:Text text="{i18n>tableNameColumnCount}" />
+                                        </m:Column>
+                                        <m:Column hAlign="End">
+                                            <m:Text text="{i18n>tableNamePaymentMethod}" />
+                                        </m:Column>
+                                    </m:columns>
+
+                                    <m:items>
+                                        <m:ColumnListItem vAlign="Middle">
+                                            <m:cells>
+                                                <m:Text text="{customerName}" />
+                                                <m:Text text="{path: 'deliveryDate', type: 'sap.ui.model.type.Date' }" />
+                                                <m:Text text="{phoneNumber}" />
+                                                <m:Text text="{amount}" />
+                                                <m:Text text="{paymentMethod}" />
+                                            </m:cells>
+                                        </m:ColumnListItem>
+                                    </m:items>
+
+                                </m:Table>
+
+
+                            </m:VBox>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+    </ObjectPageLayout>
+</core:FragmentDefinition>

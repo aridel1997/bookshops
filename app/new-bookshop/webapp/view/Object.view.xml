@@ -1,0 +1,10 @@
+<mvc:View
+        controllerName="ns.newbookshop.controller.Object"
+        xmlns="sap.uxap"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns:core="sap.ui.core">
+
+    <core:Fragment fragmentName="ns.newbookshop.view.fragments.ObjectBookDisplay" type="XML"/>
+    <core:Fragment fragmentName="ns.newbookshop.view.fragments.ObjectBookEdit" type="XML"/>
+
+</mvc:View>

@@ -1,0 +1,135 @@
+<core:FragmentDefinition
+        xmlns="sap.m"
+        xmlns:core="sap.ui.core"
+        xmlns:smartForm="sap.ui.comp.smartform"
+        xmlns:smartField="sap.ui.comp.smartfield">
+
+    <Dialog
+            id="CreateOrder"
+            title="Create order">
+        <smartForm:SmartForm
+                id="idSmartForm"
+                class="editableForm"
+                editTogglable="true"
+                editable="true">
+            <smartForm:Group id="idGroupSmartForm">
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idCustomerNameSF"
+                            value="{
+                                path: 'customerName',
+                                type: 'sap.ui.model.type.String',
+                                constraints:{
+                                  minLength: 1
+                                } }"
+                            fieldGroupIds="idFormAddOrder"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idDeliveryDateSF"
+                            value="{
+                                path: 'deliveryDate',
+                                type: 'sap.ui.model.type.Date'
+                                }"
+                            fieldGroupIds="idFormAddOrder"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idPhoneNumberSF"
+                            value="{
+                                path: 'phoneNumber',
+                                type: 'sap.ui.model.type.String',
+                                constraints:{
+                                    search: '\\S+@\\S+\\.\\S+'
+                                  }
+                                }"
+                            fieldGroupIds="idFormAddOrder"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idAmountSF"
+                            value="{
+                                path: 'amount',
+                                type: 'sap.ui.model.type.Integer',
+                                constraints:{
+                                      minimum: 1
+                                    }
+                                }"
+                            fieldGroupIds="idFormAddOrder"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idCustomerCitySF"
+                            value="{
+                                path: 'customerCity',
+                                type: 'sap.ui.model.type.String',
+                                constraints:{
+                                  minLength: 1
+                                } }"
+                            fieldGroupIds="idFormAddOrder"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idCustomerStreetSF"
+                            value="{
+                                path: 'customerStreet',
+                                type: 'sap.ui.model.type.String',
+                                constraints:{
+                                  minLength: 1
+                                } }"
+                            fieldGroupIds="idFormAddOrder"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idCustomerHouseNumberSF"
+                            value="{
+                                path: 'customerHouseNumber',
+                                type: 'sap.ui.model.type.String',
+                                constraints:{
+                                  minLength: 1
+                                } }"
+                            fieldGroupIds="idFormAddOrder"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idCustomerApartmentNumberSF"
+                            value="{
+                                path: 'customerApartmentNumber',
+                                type: 'sap.ui.model.type.Number',
+                                constraints:{
+                                      minimum: 1
+                                    }
+                                }"
+                            fieldGroupIds="idFormAddOrder"
+                            mandatory="true" />
+                </smartForm:GroupElement>
+                <smartForm:GroupElement>
+                    <smartField:SmartField
+                            id="idPaymentMethodSF"
+                            value="{paymentMethod}"
+                            fieldGroupIds="idFormAddOrder"/>
+
+                </smartForm:GroupElement>
+            </smartForm:Group>
+        </smartForm:SmartForm>
+
+        <beginButton>
+            <Button
+                    text="Create"
+                    type="Emphasized"
+                    press="onCreateOrder" />
+        </beginButton>
+        <endButton>
+            <Button
+                    text="Cancel"
+                    press="onCloseDialog" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>
