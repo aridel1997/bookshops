@@ -6,7 +6,7 @@ sap.ui.define(
         'sap/m/MessageBox',
         'sap/ui/core/Fragment',
         'sap/base/util/merge',
-        'sap/ui/model/json/JSONModel'
+        'sap/ui/model/json/JSONModel',
     ],
     function (
         BaseController,
@@ -20,17 +20,14 @@ sap.ui.define(
         'use strict';
 
         return BaseController.extend('ns.newbookshop.controller.Worklist', {
-
             onInit: function () {
-                this.oViewModel = new JSONModel();
+                this.oViewModel = new JSONModel({
+                    bHeaderExpandedVisible: true,
+                });
 
-                this.oViewModel.loadData("http://localhost:3000/categories");
-            
                 this.setModel(this.oViewModel, 'viewModel');
-
+                this.oViewModel.loadData('http://localhost:3000/categories');
             },
-
-            
 
             /**
              * Open a dialog to create a new book
@@ -95,13 +92,14 @@ sap.ui.define(
                 var aFormControls =
                     oAuthorDialog.getControlsByFieldGroupId('idFormAddAuthor');
                 this._validateFields(aFormControls).then(function () {
-                    MessageToast.show(that.i18n('ConfirmationAddAuthorSuccess'));
+                    MessageToast.show(
+                        that.i18n('ConfirmationAddAuthorSuccess')
+                    );
                     oModel.submitChanges({
                         groupId: 'author',
                     });
                     oAuthorDialog.close();
                 });
-                
             },
 
             /**
@@ -120,6 +118,12 @@ sap.ui.define(
                     oODataModel.submitChanges();
                     oBookDialog.close();
                 });
+            },
+
+            onHideFilter: function () {
+                this.oViewModel.getProperty('/bHeaderExpandedVisible')
+                    ? this.oViewModel.setProperty('/bHeaderExpandedVisible', false)
+                    : this.oViewModel.setProperty('/bHeaderExpandedVisible', true);
             },
 
             /**

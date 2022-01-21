@@ -9,8 +9,10 @@
 		xmlns:video="ns.newbookshop.control">
 
 	<semantic:SemanticPage
+	id="idSemanticPage"
 			showFooter="true"
-			fitContent="true">
+			fitContent="true"
+			headerExpanded="{viewModel>/bHeaderExpandedVisible}">
 
 		<semantic:titleHeading>
 			<Title
@@ -26,6 +28,7 @@
 					considerSelectionVariants="true"
 					enableBasicSearch="true"
 					showClearButton="true"
+					filterBarExpanded="false"
 					useToolbar="false">
 				<smartFilterBar:layoutData>
 					<FlexItemData shrinkFactor="0" />
@@ -80,7 +83,7 @@
 						title="{viewModel>name}"
 						counter="{viewModel>id}"/>
 			</List> -->
-			<video:VideoControl id="video" class="sapUiSmallMarginBeginEnd" press=".onShowVideo"/>
+			<video:VideoControl id="video" class="sapUiSmallMarginBeginEnd" change="onHideFilter"/>
 		</semantic:content>
 		<semantic:positiveAction>
 			<semantic:PositiveAction
